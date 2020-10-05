@@ -1,0 +1,13 @@
+mutation CreatePost($title: String!, $content: String!, $communityId: Int!){
+    createPost(title: $title, content: $content, communityId: $communityId){
+        errors{
+            field
+            message
+        }
+        post{
+            id
+            title
+            content
+        }
+    }
+}

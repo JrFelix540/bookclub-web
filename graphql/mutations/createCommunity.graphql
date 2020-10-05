@@ -1,0 +1,13 @@
+mutation CreateCommunity($name: String!, $description: String!){
+    createCommunity(name: $name, description: $description){
+        errors{
+            field
+            message
+        }
+        community{
+            id
+            name
+            description
+        }
+    }
+}

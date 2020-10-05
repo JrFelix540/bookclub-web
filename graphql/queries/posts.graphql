@@ -1,0 +1,23 @@
+query Posts {
+    posts {
+    id
+    title
+    content
+    creator {
+      id
+      username
+    }
+    upvotes {
+      value
+    }
+    community {
+      id
+      name
+    }
+    contentSnippet
+    createdAt
+    updatedAt
+    joinStatus
+    points
+  }
+}

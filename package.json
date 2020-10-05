@@ -1,0 +1,37 @@
+{
+  "name": "skylab-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "gen": "graphql-codegen --config codegen.yml"
+  },
+  "dependencies": {
+    "@apollo/react-common": "^3.1.4",
+    "@apollo/react-hooks": "^4.0.0",
+    "@apollo/react-ssr": "^4.0.0",
+    "@chakra-ui/core": "^0.8.0",
+    "@emotion/core": "^10.0.34",
+    "@emotion/styled": "^10.0.27",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link-http": "^1.5.17",
+    "emotion-theming": "^10.0.27",
+    "graphql": "^15.3.0",
+    "isomorphic-unfetch": "^3.1.0",
+    "next": "9.5.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "1.17.10",
+    "@types/node": "^14.0.27",
+    "@types/react": "^16.9.46",
+    "typescript": "^3.9.7",
+    "@graphql-codegen/typescript-react-apollo": "1.17.7",
+    "@graphql-codegen/typescript-operations": "1.17.8",
+    "@graphql-codegen/typescript": "1.17.10"
+  }
+}
