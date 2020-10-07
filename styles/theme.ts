@@ -28,13 +28,21 @@ const customTheme: DefaultTheme = {
       ...theme.colors.purple,
       500: '#8257e5',
     },
+    blue: {
+      ...theme.colors.blue,
+      500: "#0f3057",
+      400: "#00587a",
+      300: "#008891"
+    },
     gray: {
       ...theme.colors.gray,
       300: '#e1e1e6',
+      500: "#e7e7de",
       600: '#29292e',
       700: '#202024',
       800: '#121214'
     },
+   
   }, 
 };
 

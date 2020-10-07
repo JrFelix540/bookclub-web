@@ -12,7 +12,7 @@ class MyDocument extends Document<DocumentProps> {
       <Html>
         <Head>
           <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap" rel="stylesheet" />
-          <link rel="icon" href="/favicon.png" />
+          <link rel="icon" href="/book.png" />
         </Head>
         <body>
           <Main />
