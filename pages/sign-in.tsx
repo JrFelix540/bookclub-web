@@ -4,7 +4,7 @@ import { useRouter } from 'next/dist/client/router'
 import React, { Fragment, useState } from 'react'
 import Card from '~/components/Card'
 import InputTextField from '~/components/InputTextField'
-import { useLoginMutation } from '~/generated/graphql'
+import { MeDocument, MeQuery, useLoginMutation } from '~/generated/graphql'
 import { formatErrorMessage } from '~/utils/formatError'
 import { withApollo } from '~/utils/withApollo'
 import NextLink from 'next/link'
@@ -19,7 +19,7 @@ const Login: React.FC = () => {
         <Fragment>
             <Wrapper>
                 <Box display="flex" justifyContent="center" alignItems="center" mt={20}>
-                    <Card>
+                    <Card width="fit-content">
                         <Box 
                         display="flex" 
                         flexDirection="column" 
@@ -37,8 +37,18 @@ const Login: React.FC = () => {
                                         const response = await login({
                                             variables: {
                                                 userInput: values
+                                            },
+                                            update: (cache, {data}) => {
+                                                cache.writeQuery<MeQuery>({
+                                                    query: MeDocument,
+                                                    data: {
+                                                        __typename: "Query",
+                                                        me: data?.login.user
+                                                    }
+                                                })
                                             }
-                                        })
+                                        }
+                                        )
 
                                         if (response.data.login.errors){
                                             setErrors(formatErrorMessage(response.data.login.errors))

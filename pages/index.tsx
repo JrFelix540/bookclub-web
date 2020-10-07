@@ -6,6 +6,7 @@ import Button from '~/components/Button'
 import Divider from '~/components/Divider'
 
 import { withApollo } from '../utils/withApollo'
+import NavBar from '~/components/NavBar'
 const Home = () => {
   return (
     <div>
@@ -13,15 +14,7 @@ const Home = () => {
         <title>Bookclub</title>
       </Head>
 
-      <Grid backgroundColor="gray.500">
-        <Flex>
-          Howdy
-        </Flex>
-        <Flex>
-          Howdy
-        </Flex>
-
-      </Grid>
+      <NavBar />
     </div>
   )
 }

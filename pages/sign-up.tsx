@@ -18,7 +18,7 @@ const Register: React.FC = () => {
         <Fragment>
             <Wrapper>
                 <Box display="flex" justifyContent="center" alignItems="center" mt={20}>
-                    <Card>
+                    <Card width="fit-content">
                         <Box 
                         display="flex" 
                         flexDirection="column" 
