@@ -282,7 +282,7 @@ export type RegularErrorFragment = (
 
 export type RegularPostFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'title' | 'content' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points'>
+  & Pick<Post, 'id' | 'title' | 'content' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'contentSnippet'>
   & { creator: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
@@ -501,6 +501,7 @@ export const RegularPostFragmentDoc = gql`
   updatedAt
   joinStatus
   points
+  contentSnippet
 }
     `;
 export const RegularUserFragmentDoc = gql`

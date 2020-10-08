@@ -17,4 +17,6 @@ fragment RegularPost on Post {
     updatedAt
     joinStatus
     points
+    contentSnippet
+    
 }
