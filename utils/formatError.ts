@@ -1,4 +1,4 @@
-import { FieldError } from "../src/generated/graphql";
+import { FieldError } from "../generated/graphql"
 
 
 export const formatErrorMessage = (errors: FieldError[]) => {

@@ -1,0 +1,161 @@
+import { Box, Button, Flex, Grid, Text } from "@chakra-ui/core";
+import { Form, Formik } from "formik";
+import { useRouter } from "next/dist/client/router";
+import Head from "next/head";
+import React, { Fragment, useState } from "react";
+import Card from "~/components/Card";
+import InputTextField from "~/components/InputTextField";
+import NavBar from "~/components/NavBar";
+import SelectInput from "~/components/SelectInput";
+import Wrapper from "~/components/Wrapper";
+import {
+    useCreatePostMutation,
+    useMeQuery,
+    useMeWithCommunitiesQuery,
+} from "~/generated/graphql";
+import { withApollo } from "~/utils/withApollo";
+import TextAreaField from "~/components/TextAreaField";
+import { formatErrorMessage } from "~/utils/formatError";
+
+const CreatePost: React.FC = () => {
+    const router = useRouter();
+    const [createPost, {}] = useCreatePostMutation();
+    const { data, loading } = useMeWithCommunitiesQuery();
+    const { data: meData, loading: meLoading } = useMeQuery();
+
+    if (loading) {
+        return (
+            <Fragment>
+                <p>Fetching communities</p>
+            </Fragment>
+        );
+    }
+
+    if (meLoading) {
+        return <p>User loading</p>;
+    }
+
+    if (!loading && !data) {
+        console.log(`Could not fetch communities`);
+    }
+
+    return (
+        <Fragment>
+            <Head>
+                <title>Create Post</title>
+            </Head>
+            <NavBar me={meData.me} />
+            <Wrapper>
+                <Grid templateColumns="2fr 1fr" columnGap="40px">
+                    <Flex mt={10}>
+                        <Card width="100%">
+                            <Box p={5}>
+                                <Box>
+                                    <Text>Create Post</Text>
+                                </Box>
+                                <Formik
+                                    initialValues={{
+                                        communityId: undefined,
+                                        title: "",
+                                        content: "",
+                                    }}
+                                    onSubmit={async (
+                                        values,
+                                        { setErrors },
+                                    ) => {
+                                        console.log(values);
+                                        const response = await createPost(
+                                            {
+                                                variables: {
+                                                    ...values,
+                                                    communityId: parseInt(
+                                                        values.communityId,
+                                                    ),
+                                                },
+                                            },
+                                        );
+
+                                        if (
+                                            response.data.createPost
+                                                .errors
+                                        ) {
+                                            setErrors(
+                                                formatErrorMessage(
+                                                    response.data
+                                                        .createPost
+                                                        .errors,
+                                                ),
+                                            );
+                                        }
+
+                                        router.push("/");
+                                    }}
+                                >
+                                    {({ isSubmitting }) => (
+                                        <Form>
+                                            <Box m={2}>
+                                                <SelectInput
+                                                    name="communityId"
+                                                    label="Community"
+                                                    optionValues={
+                                                        data
+                                                            .meWithCommunities
+                                                            .memberCommunities
+                                                    }
+                                                />
+                                            </Box>
+                                            <Box mb={2}>
+                                                <InputTextField
+                                                    name="title"
+                                                    label="Title"
+                                                    placeholder="Title"
+                                                    width="100%"
+                                                />
+                                            </Box>
+                                            <Box mb={2}>
+                                                <TextAreaField
+                                                    name="content"
+                                                    label="Content"
+                                                    placeholder="What are your thoughts?"
+                                                    width="100%"
+                                                />
+                                            </Box>
+                                            <Flex justifyContent="flex-end">
+                                                <Flex mt={4}>
+                                                    <Button
+                                                        type="submit"
+                                                        variant="solid"
+                                                        backgroundColor="#0f3057"
+                                                        color="#fff"
+                                                        mr={2}
+                                                        isLoading={
+                                                            isSubmitting
+                                                        }
+                                                    >
+                                                        Create Post
+                                                    </Button>
+                                                    <Button
+                                                        onClick={() => {
+                                                            router.push(
+                                                                "/",
+                                                            );
+                                                        }}
+                                                    >
+                                                        Cancel
+                                                    </Button>
+                                                </Flex>
+                                            </Flex>
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </Box>
+                        </Card>
+                    </Flex>
+                    <Flex></Flex>
+                </Grid>
+            </Wrapper>
+        </Fragment>
+    );
+};
+
+export default withApollo()(CreatePost);

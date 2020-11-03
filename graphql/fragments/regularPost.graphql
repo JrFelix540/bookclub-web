@@ -3,20 +3,20 @@ fragment RegularPost on Post {
     title
     content
     creator {
-      id
-      username
+        id
+        username
     }
     upvotes {
-      value
+        value
     }
     community {
-      id
-      name
+        id
+        name
     }
     createdAt
     updatedAt
     joinStatus
     points
     contentSnippet
-    
+    hasVoted
 }

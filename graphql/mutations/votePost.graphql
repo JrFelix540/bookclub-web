@@ -1,0 +1,12 @@
+mutation VotePost($postId: Int!, $value: Int!) {
+    vote(postId: $postId, value: $value) {
+        errors {
+            field
+            message
+        }
+        upvote {
+            postId
+            creatorId
+        }
+    }
+}

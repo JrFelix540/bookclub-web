@@ -1,0 +1,8 @@
+query MeWithCommunities {
+    meWithCommunities {
+        memberCommunities {
+            id
+            name
+        }
+    }
+}

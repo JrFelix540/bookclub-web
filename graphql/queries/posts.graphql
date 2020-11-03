@@ -1,23 +1,25 @@
 query Posts {
     posts {
-    id
-    title
-    content
-    creator {
-      id
-      username
+        id
+        title
+        content
+        creator {
+            id
+            username
+        }
+        upvotes {
+            value
+        }
+        community {
+            id
+            name
+        }
+        contentSnippet
+        createdAt
+        updatedAt
+        joinStatus
+        points
+        isOwner
+        hasVoted
     }
-    upvotes {
-      value
-    }
-    community {
-      id
-      name
-    }
-    contentSnippet
-    createdAt
-    updatedAt
-    joinStatus
-    points
-  }
 }
