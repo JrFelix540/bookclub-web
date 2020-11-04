@@ -7,6 +7,7 @@ import {
 import Card from "./Card";
 import DeleteModal from "./DeleteModal";
 import Upvote from "./Upvote";
+import NextLink from "next/link";
 
 interface PostCardProps {
     post: RegularPostFragment;
@@ -45,16 +46,13 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                 ) : (
                                     <Button
                                         onClick={async () => {
-                                            const response = await joinCommunity(
-                                                {
-                                                    variables: {
-                                                        id:
-                                                            post
-                                                                .community
-                                                                .id,
-                                                    },
+                                            await joinCommunity({
+                                                variables: {
+                                                    id:
+                                                        post.community
+                                                            .id,
                                                 },
-                                            );
+                                            });
                                         }}
                                     >
                                         Join
@@ -68,7 +66,14 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                             <Flex justifyContent="flex-end" mt={4}>
                                 {post.isOwner && (
                                     <>
-                                        <Link mr={2}>Edit Post</Link>
+                                        <NextLink
+                                            href="/post/edit/[id]"
+                                            as={`post/edit/${post.id}`}
+                                        >
+                                            <Link mr={2}>
+                                                Edit Post
+                                            </Link>
+                                        </NextLink>
                                         <DeleteModal id={post.id} />
                                     </>
                                 )}

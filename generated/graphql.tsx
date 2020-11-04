@@ -445,6 +445,27 @@ export type ResetPasswordMutation = (
   ) }
 );
 
+export type UpdatePostMutationVariables = Exact<{
+  id: Scalars['Float'];
+  title: Scalars['String'];
+  content: Scalars['String'];
+}>;
+
+
+export type UpdatePostMutation = (
+  { __typename?: 'Mutation' }
+  & { updatePost: (
+    { __typename?: 'PostResponse' }
+    & { post?: Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'content' | 'createdAt'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
+
 export type VotePostMutationVariables = Exact<{
   postId: Scalars['Int'];
   value: Scalars['Int'];
@@ -499,6 +520,32 @@ export type MeWithCommunitiesQuery = (
       & Pick<Community, 'id' | 'name'>
     )> }
   )> }
+);
+
+export type PostQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type PostQuery = (
+  { __typename?: 'Query' }
+  & { post: (
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'title' | 'content' | 'isOwner' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'hasVoted'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ), upvotes: Array<(
+      { __typename?: 'Upvote' }
+      & Pick<Upvote, 'value'>
+    )>, community: (
+      { __typename?: 'Community' }
+      & Pick<Community, 'id' | 'name'>
+    ), comments: Array<(
+      { __typename?: 'UserComment' }
+      & Pick<UserComment, 'content'>
+    )> }
+  ) }
 );
 
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -888,6 +935,48 @@ export function useResetPasswordMutation(baseOptions?: ApolloReactHooks.Mutation
 export type ResetPasswordMutationHookResult = ReturnType<typeof useResetPasswordMutation>;
 export type ResetPasswordMutationResult = ApolloReactCommon.MutationResult<ResetPasswordMutation>;
 export type ResetPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<ResetPasswordMutation, ResetPasswordMutationVariables>;
+export const UpdatePostDocument = gql`
+    mutation UpdatePost($id: Float!, $title: String!, $content: String!) {
+  updatePost(id: $id, title: $title, content: $content) {
+    post {
+      id
+      content
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+export type UpdatePostMutationFn = ApolloReactCommon.MutationFunction<UpdatePostMutation, UpdatePostMutationVariables>;
+
+/**
+ * __useUpdatePostMutation__
+ *
+ * To run a mutation, you first call `useUpdatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePostMutation, { data, loading, error }] = useUpdatePostMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *      content: // value for 'content'
+ *   },
+ * });
+ */
+export function useUpdatePostMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdatePostMutation, UpdatePostMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdatePostMutation, UpdatePostMutationVariables>(UpdatePostDocument, baseOptions);
+      }
+export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
+export type UpdatePostMutationResult = ApolloReactCommon.MutationResult<UpdatePostMutation>;
+export type UpdatePostMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
 export const VotePostDocument = gql`
     mutation VotePost($postId: Int!, $value: Int!) {
   vote(postId: $postId, value: $value) {
@@ -1028,6 +1117,61 @@ export function useMeWithCommunitiesLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type MeWithCommunitiesQueryHookResult = ReturnType<typeof useMeWithCommunitiesQuery>;
 export type MeWithCommunitiesLazyQueryHookResult = ReturnType<typeof useMeWithCommunitiesLazyQuery>;
 export type MeWithCommunitiesQueryResult = ApolloReactCommon.QueryResult<MeWithCommunitiesQuery, MeWithCommunitiesQueryVariables>;
+export const PostDocument = gql`
+    query Post($id: Float!) {
+  post(id: $id) {
+    id
+    title
+    content
+    isOwner
+    creator {
+      id
+      username
+    }
+    upvotes {
+      value
+    }
+    community {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+    comments {
+      content
+    }
+    joinStatus
+    points
+    hasVoted
+  }
+}
+    `;
+
+/**
+ * __usePostQuery__
+ *
+ * To run a query within a React component, call `usePostQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePostQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PostQuery, PostQueryVariables>) {
+        return ApolloReactHooks.useQuery<PostQuery, PostQueryVariables>(PostDocument, baseOptions);
+      }
+export function usePostLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PostQuery, PostQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<PostQuery, PostQueryVariables>(PostDocument, baseOptions);
+        }
+export type PostQueryHookResult = ReturnType<typeof usePostQuery>;
+export type PostLazyQueryHookResult = ReturnType<typeof usePostLazyQuery>;
+export type PostQueryResult = ApolloReactCommon.QueryResult<PostQuery, PostQueryVariables>;
 export const PostsDocument = gql`
     query Posts {
   posts {
