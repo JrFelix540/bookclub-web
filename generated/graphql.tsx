@@ -290,7 +290,7 @@ export type RegularErrorFragment = (
 
 export type RegularPostFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'title' | 'content' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'contentSnippet' | 'hasVoted'>
+  & Pick<Post, 'id' | 'title' | 'content' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'contentSnippet' | 'hasVoted' | 'isOwner'>
   & { creator: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
@@ -358,6 +358,16 @@ export type CreatePostMutation = (
       & Pick<Post, 'id' | 'title' | 'content'>
     )> }
   ) }
+);
+
+export type DeletePostMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeletePostMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deletePost'>
 );
 
 export type ForgorPasswordMutationVariables = Exact<{
@@ -545,6 +555,7 @@ export const RegularPostFragmentDoc = gql`
   points
   contentSnippet
   hasVoted
+  isOwner
 }
     `;
 export const RegularUserFragmentDoc = gql`
@@ -656,6 +667,36 @@ export function useCreatePostMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = ApolloReactCommon.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const DeletePostDocument = gql`
+    mutation DeletePost($id: Int!) {
+  deletePost(id: $id)
+}
+    `;
+export type DeletePostMutationFn = ApolloReactCommon.MutationFunction<DeletePostMutation, DeletePostMutationVariables>;
+
+/**
+ * __useDeletePostMutation__
+ *
+ * To run a mutation, you first call `useDeletePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePostMutation, { data, loading, error }] = useDeletePostMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeletePostMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeletePostMutation, DeletePostMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeletePostMutation, DeletePostMutationVariables>(DeletePostDocument, baseOptions);
+      }
+export type DeletePostMutationHookResult = ReturnType<typeof useDeletePostMutation>;
+export type DeletePostMutationResult = ApolloReactCommon.MutationResult<DeletePostMutation>;
+export type DeletePostMutationOptions = ApolloReactCommon.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
 export const ForgorPasswordDocument = gql`
     mutation ForgorPassword($email: String!) {
   forgotPassword(email: $email)

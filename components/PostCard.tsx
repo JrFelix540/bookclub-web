@@ -5,6 +5,7 @@ import {
     useJoinCommunityMutation,
 } from "~/generated/graphql";
 import Card from "./Card";
+import DeleteModal from "./DeleteModal";
 import Upvote from "./Upvote";
 
 interface PostCardProps {
@@ -54,18 +55,6 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                                     },
                                                 },
                                             );
-
-                                            if (
-                                                response.data
-                                                    .joinCommunity
-                                                    .errors
-                                            ) {
-                                                console.log(
-                                                    response.data
-                                                        .joinCommunity
-                                                        .errors,
-                                                );
-                                            }
                                         }}
                                     >
                                         Join
@@ -75,6 +64,15 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                             <Flex direction="column" ml={4}>
                                 <Link href="/">{post.title}</Link>
                                 <Text>{post.contentSnippet}</Text>
+                            </Flex>
+                            <Flex justifyContent="flex-end" mt={4}>
+                                {post.isOwner && (
+                                    <>
+                                        <Link mr={2}>Edit Post</Link>
+                                        <DeleteModal id={post.id} />
+                                    </>
+                                )}
+                                <Link href=""></Link>
                             </Flex>
                         </Flex>
                     </Flex>
