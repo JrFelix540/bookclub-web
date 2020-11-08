@@ -1,0 +1,17 @@
+fragment RegularComment on UserComment {
+    id
+    content
+    hasVoted
+    creator {
+        id
+        username
+    }
+    post {
+        id
+    }
+    points
+    createdAt
+    updatedAt
+    isOwner
+    voteStatus
+}

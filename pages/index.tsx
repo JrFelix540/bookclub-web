@@ -5,8 +5,8 @@ import { withApollo } from "../utils/withApollo";
 import NavBar from "~/components/NavBar";
 import Posts from "~/components/Posts";
 import Wrapper from "~/components/Wrapper";
-import Sidebars from "~/components/Sidebars";
 import { useMeQuery } from "~/generated/graphql";
+import SidebarsHome from "~/components/SidebarsHome";
 
 const Home = () => {
     const { data, loading } = useMeQuery();
@@ -28,7 +28,7 @@ const Home = () => {
                         <Posts />
                     </Flex>
                     <Flex>
-                        <Sidebars me={data.me} />
+                        <SidebarsHome me={data.me} />
                     </Flex>
                 </Grid>
             </Wrapper>

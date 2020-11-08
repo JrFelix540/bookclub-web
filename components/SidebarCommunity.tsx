@@ -1,50 +1,98 @@
-import {
-    Box,
-    Flex,
-    Icon,
-    List,
-    ListItem,
-    Text,
-} from "@chakra-ui/core";
-import React from "react";
-import { useCommunityWithIdsQuery } from "~/generated/graphql";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/core";
+import React, { Fragment } from "react";
+import NextLink from "next/link";
 import Card from "./Card";
+import { useCommunityQuery } from "~/generated/graphql";
+import fromUnixTime from "date-fns/fromUnixTime";
 
-const SidebarCommunity: React.FC = () => {
-    const { data, loading } = useCommunityWithIdsQuery();
+interface SidebarCommunityProps {
+    id: number;
+}
+
+const SidebarCommunity: React.FC<SidebarCommunityProps> = ({
+    id,
+}) => {
+    const { data, loading } = useCommunityQuery({
+        variables: {
+            id,
+        },
+    });
 
     if (loading) {
-        return <p>Loading ...</p>;
+        return <p>Community Loading</p>;
+    }
+
+    if (!loading && !data) {
+        return <p>No community found</p>;
     }
 
     return (
-        <>
-            <Card width="100%">
-                <Flex
-                    direction="column"
-                    justifyContent="center"
-                    p="20px 15px"
-                    width="100%"
-                >
-                    <Text textAlign="center">Our BookClubs</Text>
-                    <List w="100%">
-                        {data?.allCommunities.map((comm) => (
-                            <ListItem
-                                key={comm.id}
-                                borderBottom="1px solid #e7e7de"
-                                pb="10px"
-                            >
-                                <Flex>
-                                    <Box>
-                                        <Text>{comm.name}</Text>
-                                    </Box>
-                                </Flex>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Flex>
+        <Fragment>
+            <Card width="100%" mb={4}>
+                <Box p="20px 15px">
+                    <Flex direction="column">
+                        <Text mb={4}>About Community</Text>
+                        <Flex alignItems="center" mb={4}>
+                            <Image
+                                src="/book.png"
+                                alt="BookClub Logo"
+                                size="40px"
+                            />
+                            <Text ml={4}>
+                                b/{data.community.name}
+                            </Text>
+                        </Flex>
+                        <Box>
+                            <Text>{data.community.description}</Text>
+                        </Box>
+                        <Flex
+                            direction="column"
+                            pb={2}
+                            borderBottom="1px solid #dedede"
+                        >
+                            <Text>
+                                {data.community.memberIds.length}
+                            </Text>
+                            <Text>Bookies</Text>
+                        </Flex>
+                        <Box m={2}>
+                            <Text>
+                                Created on{" "}
+                                {data.community.dateCreated}
+                            </Text>
+                        </Box>
+                        {data.community.hasJoined ? (
+                            <Flex mt={2} direction="column">
+                                <Box
+                                    w="100%"
+                                    textAlign="center"
+                                    backgroundColor="#EDF2F7"
+                                    p="0.5rem 1rem"
+                                    mb={2}
+                                >
+                                    Joined
+                                </Box>
+
+                                <NextLink href="/create-post">
+                                    <Button
+                                        backgroundColor="#0f3057"
+                                        color="#fff"
+                                    >
+                                        Create Post
+                                    </Button>
+                                </NextLink>
+                            </Flex>
+                        ) : (
+                            <Box>
+                                <Button w="100%" variant="solid">
+                                    Join
+                                </Button>
+                            </Box>
+                        )}
+                    </Flex>
+                </Box>
             </Card>
-        </>
+        </Fragment>
     );
 };
 

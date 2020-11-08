@@ -8,7 +8,7 @@ interface SidebarHomeProps {
     me: RegularUserFragment;
 }
 
-const SidebarHome: React.FC<SidebarHomeProps> = ({ me }) => {
+const SidebarCreate: React.FC<SidebarHomeProps> = ({ me }) => {
     const router = useRouter();
 
     return (
@@ -62,4 +62,4 @@ const SidebarHome: React.FC<SidebarHomeProps> = ({ me }) => {
     );
 };
 
-export default SidebarHome;
+export default SidebarCreate;

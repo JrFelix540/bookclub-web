@@ -9,25 +9,36 @@ import {
     Button,
     Modal,
     Link,
+    Icon,
+    Flex,
 } from "@chakra-ui/core";
 import React from "react";
-import { useDeletePostMutation } from "~/generated/graphql";
+import {
+    useDeleteCommentMutation,
+    useDeletePostMutation,
+} from "~/generated/graphql";
 
 interface DeleteModalProps {
     id: number;
+    entity: "post" | "comment";
 }
 
-const DeleteModal: React.FC<DeleteModalProps> = ({ id }) => {
+const DeleteModal: React.FC<DeleteModalProps> = ({ id, entity }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [deletePost, {}] = useDeletePostMutation();
+    const [deleteComment, {}] = useDeleteCommentMutation();
     return (
         <>
-            <Link onClick={onOpen}> Delete Post</Link>
+            <Link onClick={onOpen} fontSize="sm">
+                <Flex alignItems="center">Delete {entity}</Flex>
+            </Link>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalCloseButton />
-                    <ModalBody>Proceed to delete Post ?</ModalBody>
+                    <ModalBody>
+                        Proceed to delete {entity} ?
+                    </ModalBody>
 
                     <ModalFooter>
                         <Button
@@ -40,11 +51,24 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ id }) => {
                         <Button
                             variantColor="red"
                             onClick={async () => {
-                                await deletePost({
-                                    variables: {
-                                        id,
-                                    },
-                                });
+                                if (entity === "post") {
+                                    await deletePost({
+                                        variables: {
+                                            id,
+                                        },
+                                        update: (cache) => {
+                                            cache.evict({
+                                                id: "Post:" + id,
+                                            });
+                                        },
+                                    });
+                                } else if (entity === "comment") {
+                                    await deleteComment({
+                                        variables: {
+                                            commentId: id,
+                                        },
+                                    });
+                                }
                                 onClose();
                             }}
                         >

@@ -20,6 +20,7 @@ const EditPostPage: React.FC = () => {
     const router = useRouter();
     const intId = useGetIntId();
 
+    const [updatePost, {}] = useUpdatePostMutation();
     const { data, loading } = usePostQuery({
         skip: intId === -1,
         variables: {
@@ -28,8 +29,6 @@ const EditPostPage: React.FC = () => {
     });
 
     const { data: meData, loading: meLoading } = useMeQuery();
-
-    const [updatePost, {}] = useUpdatePostMutation();
 
     if (loading) {
         return (

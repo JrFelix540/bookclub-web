@@ -63,7 +63,6 @@ const CreatePost: React.FC = () => {
                                         values,
                                         { setErrors },
                                     ) => {
-                                        console.log(values);
                                         const response = await createPost(
                                             {
                                                 variables: {

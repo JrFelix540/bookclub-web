@@ -1,6 +1,13 @@
 import { ApolloCache } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { IconButton, Text } from "@chakra-ui/core";
+import {
+    IconButton,
+    Text,
+    Button,
+    Icon,
+    Link,
+    Box,
+} from "@chakra-ui/core";
 import React, { useState } from "react";
 import {
     RegularPostFragment,
@@ -62,55 +69,64 @@ const Upvote: React.FC<UpvoteProps> = ({ post }) => {
 
     return (
         <>
-            <IconButton
-                aria-label="Upvote"
-                icon="triangle-up"
-                variantColor={
-                    post.hasVoted === 1 ? "blue" : undefined
-                }
-                onClick={async () => {
-                    setLoadingState("upvoteLoading");
-                    if (post.hasVoted === 1) {
-                        return;
-                    }
+            <Box>
+                <Link
+                    onClick={async () => {
+                        setLoadingState("upvoteLoading");
+                        if (post.hasVoted === 1) {
+                            return;
+                        }
 
-                    await votePost({
-                        variables: {
-                            postId: post.id,
-                            value: 1,
-                        },
-                        update: (cache) =>
-                            updateAfterVote(1, post.id, cache),
-                    });
+                        await votePost({
+                            variables: {
+                                postId: post.id,
+                                value: 1,
+                            },
+                            update: (cache) =>
+                                updateAfterVote(1, post.id, cache),
+                        });
 
-                    setLoadingState("not-loading");
-                }}
-                isDisabled={loadingState === "upvoteLoading"}
-            />
-            <Text>{post.points}</Text>
-            <IconButton
-                aria-label="Downvote"
-                icon="triangle-down"
-                variantColor={
-                    post.hasVoted === -1 ? "red" : undefined
-                }
-                onClick={async () => {
-                    setLoadingState("downvoteLoading");
-                    if (post.hasVoted === -1) {
-                        return;
-                    }
-                    await votePost({
-                        variables: {
-                            postId: post.id,
-                            value: -1,
-                        },
-                        update: (cache) =>
-                            updateAfterVote(-1, post.id, cache),
-                    });
-                    setLoadingState("not-loading");
-                }}
-                isDisabled={loadingState === "downvoteLoading"}
-            />
+                        setLoadingState("not-loading");
+                    }}
+                >
+                    <Icon
+                        aria-label="Upvote"
+                        name="triangle-up"
+                        color={
+                            post.hasVoted === 1
+                                ? "blue.500"
+                                : "gray.300"
+                        }
+                    />
+                </Link>
+                <Text textAlign="center">{post.points}</Text>
+                <Link
+                    onClick={async () => {
+                        setLoadingState("downvoteLoading");
+                        if (post.hasVoted === -1) {
+                            return;
+                        }
+                        await votePost({
+                            variables: {
+                                postId: post.id,
+                                value: -1,
+                            },
+                            update: (cache) =>
+                                updateAfterVote(-1, post.id, cache),
+                        });
+                        setLoadingState("not-loading");
+                    }}
+                >
+                    <Icon
+                        name="triangle-down"
+                        color={
+                            post.hasVoted === -1
+                                ? "red.500"
+                                : "gray.300"
+                        }
+                    />
+                </Link>
+            </Box>
         </>
     );
 };

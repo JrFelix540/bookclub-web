@@ -1,19 +1,16 @@
-import { Box } from '@chakra-ui/core'
-import React, { Fragment } from 'react'
+import { Box } from "@chakra-ui/core";
+import React, { Fragment } from "react";
 
-interface WrapperProps {
-   
-}
+interface WrapperProps {}
 
-const Wrapper: React.FC<WrapperProps> = ({children}) => {
+const Wrapper: React.FC<WrapperProps> = ({ children }) => {
     return (
         <Fragment>
-            <Box maxW={"900px"} m={"0 auto"}>
+            <Box maxW={"1140px"} m={"0 auto"}>
                 {children}
             </Box>
         </Fragment>
-    )
-}
+    );
+};
 
-
-export default Wrapper
+export default Wrapper;

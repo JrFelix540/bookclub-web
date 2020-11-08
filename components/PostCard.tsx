@@ -33,7 +33,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                 alignItems="center"
                                 ml={4}
                             >
-                                <Text>
+                                <Text fontSize="sm">
                                     Posted in c/{post.community.name}{" "}
                                     by u/{post.creator.username}
                                 </Text>
@@ -60,21 +60,39 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                 )}
                             </Flex>
                             <Flex direction="column" ml={4}>
-                                <Link href="/">{post.title}</Link>
-                                <Text>{post.contentSnippet}</Text>
+                                <NextLink
+                                    href="/post/[id]"
+                                    as={`post/${post.id}`}
+                                >
+                                    <Link
+                                        fontSize="2xl"
+                                        fontWeight="700"
+                                    >
+                                        {post.title}
+                                    </Link>
+                                </NextLink>
+                                <Text isTruncated>
+                                    {post.content}
+                                </Text>
                             </Flex>
                             <Flex justifyContent="flex-end" mt={4}>
                                 {post.isOwner && (
                                     <>
                                         <NextLink
                                             href="/post/edit/[id]"
-                                            as={`post/edit/${post.id}`}
+                                            as={`/post/edit/${post.id}`}
                                         >
-                                            <Link mr={2}>
+                                            <Link
+                                                mr={2}
+                                                fontSize="sm"
+                                            >
                                                 Edit Post
                                             </Link>
                                         </NextLink>
-                                        <DeleteModal id={post.id} />
+                                        <DeleteModal
+                                            id={post.id}
+                                            entity="post"
+                                        />
                                     </>
                                 )}
                                 <Link href=""></Link>

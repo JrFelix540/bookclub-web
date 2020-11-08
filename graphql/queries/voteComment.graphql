@@ -1,0 +1,13 @@
+mutation VoteComment($commentId: Float!, $value: Int!) {
+    voteComment(commentId: $commentId, value: $value) {
+        errors {
+            field
+            message
+        }
+        commentUpvote {
+            creatorId
+            commentId
+            value
+        }
+    }
+}
