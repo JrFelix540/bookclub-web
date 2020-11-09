@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Icon, Link, Text } from "@chakra-ui/core";
 import React, { Fragment } from "react";
 import {
+    PostsDocument,
     RegularPostFragment,
     useJoinCommunityMutation,
 } from "~/generated/graphql";
@@ -52,6 +53,11 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                                         post.community
                                                             .id,
                                                 },
+                                                refetchQueries: [
+                                                    {
+                                                        query: PostsDocument,
+                                                    },
+                                                ],
                                             });
                                         }}
                                     >

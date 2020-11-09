@@ -19,6 +19,7 @@ import { useRouter } from "next/dist/client/router";
 import {
     MeDocument,
     MeQuery,
+    PostsDocument,
     RegularUserFragment,
     useLogoutMutation,
     useMeQuery,
@@ -86,6 +87,11 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                                         <Link
                                             onClick={async () => {
                                                 await logout({
+                                                    refetchQueries: [
+                                                        {
+                                                            query: PostsDocument,
+                                                        },
+                                                    ],
                                                     update: (
                                                         cache,
                                                     ) => {

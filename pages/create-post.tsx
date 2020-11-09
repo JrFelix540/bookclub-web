@@ -9,6 +9,8 @@ import NavBar from "~/components/NavBar";
 import SelectInput from "~/components/SelectInput";
 import Wrapper from "~/components/Wrapper";
 import {
+    PostsDocument,
+    PostsQuery,
     useCreatePostMutation,
     useMeQuery,
     useMeWithCommunitiesQuery,
@@ -70,6 +72,31 @@ const CreatePost: React.FC = () => {
                                                     communityId: parseInt(
                                                         values.communityId,
                                                     ),
+                                                },
+                                                update: (
+                                                    store,
+                                                    { data },
+                                                ) => {
+                                                    const postsData = store.readQuery<
+                                                        PostsQuery
+                                                    >({
+                                                        query: PostsDocument,
+                                                    });
+
+                                                    store.writeQuery<
+                                                        PostsQuery
+                                                    >({
+                                                        query: PostsDocument,
+                                                        data: {
+                                                            posts: [
+                                                                ...postsData!
+                                                                    .posts,
+                                                                data!
+                                                                    .createPost
+                                                                    .post,
+                                                            ],
+                                                        },
+                                                    });
                                                 },
                                             },
                                         );

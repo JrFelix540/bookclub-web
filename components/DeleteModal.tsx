@@ -1,3 +1,4 @@
+import { ApolloCache } from "@apollo/react-hooks";
 import {
     useDisclosure,
     ModalOverlay,
@@ -14,6 +15,10 @@ import {
 } from "@chakra-ui/core";
 import React from "react";
 import {
+    PostCommentsDocument,
+    PostCommentsQuery,
+    PostsDocument,
+    PostsQuery,
     useDeleteCommentMutation,
     useDeletePostMutation,
 } from "~/generated/graphql";
@@ -21,9 +26,14 @@ import {
 interface DeleteModalProps {
     id: number;
     entity: "post" | "comment";
+    postCommentId?: number;
 }
 
-const DeleteModal: React.FC<DeleteModalProps> = ({ id, entity }) => {
+const DeleteModal: React.FC<DeleteModalProps> = ({
+    id,
+    entity,
+    postCommentId,
+}) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [deletePost, {}] = useDeletePostMutation();
     const [deleteComment, {}] = useDeleteCommentMutation();
@@ -32,7 +42,11 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ id, entity }) => {
             <Link onClick={onOpen} fontSize="sm">
                 <Flex alignItems="center">Delete {entity}</Flex>
             </Link>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+                blockScrollOnMount={true}
+            >
                 <ModalOverlay />
                 <ModalContent>
                     <ModalCloseButton />
@@ -56,9 +70,24 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ id, entity }) => {
                                         variables: {
                                             id,
                                         },
-                                        update: (cache) => {
-                                            cache.evict({
-                                                id: "Post:" + id,
+                                        update: (store, { data }) => {
+                                            const postsData = store.readQuery<
+                                                PostsQuery
+                                            >({
+                                                query: PostsDocument,
+                                            });
+
+                                            store.writeQuery<
+                                                PostsQuery
+                                            >({
+                                                query: PostsDocument,
+                                                data: {
+                                                    posts: postsData.posts.filter(
+                                                        (post) =>
+                                                            post.id !==
+                                                            id,
+                                                    ),
+                                                },
                                             });
                                         },
                                     });
@@ -66,6 +95,37 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ id, entity }) => {
                                     await deleteComment({
                                         variables: {
                                             commentId: id,
+                                        },
+                                        update: (store) => {
+                                            const postCommentsData = store.readQuery<
+                                                PostCommentsQuery
+                                            >({
+                                                query: PostCommentsDocument,
+                                                variables: {
+                                                    postId: postCommentId,
+                                                },
+                                            });
+
+                                            const newComments = postCommentsData.postComments.filter(
+                                                (comment) =>
+                                                    id !== comment.id,
+                                            );
+
+                                            store.writeQuery<
+                                                PostCommentsQuery
+                                            >({
+                                                query: PostCommentsDocument,
+                                                variables: {
+                                                    postId: postCommentId,
+                                                },
+                                                data: {
+                                                    postComments: postCommentsData.postComments.filter(
+                                                        (comment) =>
+                                                            comment.id !==
+                                                            id,
+                                                    ),
+                                                },
+                                            });
                                         },
                                     });
                                 }

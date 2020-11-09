@@ -45,6 +45,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
                                     <DeleteModal
                                         id={comment.id}
                                         entity="comment"
+                                        postCommentId={postId}
                                     />
                                 </Flex>
                             </>

@@ -3,6 +3,13 @@ mutation CreateComment($postId: Float!, $content: String!) {
         comment {
             id
             content
+            points
+            isOwner
+            voteStatus
+            creator {
+                id
+                username
+            }
         }
         errors {
             field

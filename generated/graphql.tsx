@@ -86,7 +86,7 @@ export type Post = {
   community: Community;
   communityId: Scalars['Int'];
   comments: Array<UserComment>;
-  upvotes: Array<Upvote>;
+  upvotes?: Maybe<Array<Upvote>>;
   points: Scalars['Int'];
   voteStatus?: Maybe<Scalars['Int']>;
   createdAt: Scalars['String'];
@@ -360,10 +360,10 @@ export type RegularPostFragment = (
   & { creator: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
-  ), upvotes: Array<(
+  ), upvotes?: Maybe<Array<(
     { __typename?: 'Upvote' }
     & Pick<Upvote, 'value'>
-  )>, community: (
+  )>>, community: (
     { __typename?: 'Community' }
     & Pick<Community, 'id' | 'name'>
   ) }
@@ -397,7 +397,11 @@ export type CreateCommentMutation = (
     { __typename?: 'UserCommentResponse' }
     & { comment?: Maybe<(
       { __typename?: 'UserComment' }
-      & Pick<UserComment, 'id' | 'content'>
+      & Pick<UserComment, 'id' | 'content' | 'points' | 'isOwner' | 'voteStatus'>
+      & { creator: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ) }
     )>, errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -441,7 +445,17 @@ export type CreatePostMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, post?: Maybe<(
       { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title' | 'content'>
+      & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
+      & { creator: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ), upvotes?: Maybe<Array<(
+        { __typename?: 'Upvote' }
+        & Pick<Upvote, 'value'>
+      )>>, community: (
+        { __typename?: 'Community' }
+        & Pick<Community, 'id' | 'name'>
+      ) }
     )> }
   ) }
 );
@@ -644,10 +658,10 @@ export type PostQuery = (
     & { creator: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
-    ), upvotes: Array<(
+    ), upvotes?: Maybe<Array<(
       { __typename?: 'Upvote' }
       & Pick<Upvote, 'value'>
-    )>, community: (
+    )>>, community: (
       { __typename?: 'Community' }
       & Pick<Community, 'id' | 'name'>
     ), comments: Array<(
@@ -685,10 +699,10 @@ export type PostsQuery = (
     & { creator: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
-    ), upvotes: Array<(
+    ), upvotes?: Maybe<Array<(
       { __typename?: 'Upvote' }
       & Pick<Upvote, 'value'>
-    )>, community: (
+    )>>, community: (
       { __typename?: 'Community' }
       & Pick<Community, 'id' | 'name'>
     ) }
@@ -802,6 +816,13 @@ export const CreateCommentDocument = gql`
     comment {
       id
       content
+      points
+      isOwner
+      voteStatus
+      creator {
+        id
+        username
+      }
     }
     errors {
       field
@@ -888,6 +909,24 @@ export const CreatePostDocument = gql`
       id
       title
       content
+      creator {
+        id
+        username
+      }
+      upvotes {
+        value
+      }
+      community {
+        id
+        name
+      }
+      contentSnippet
+      createdAt
+      updatedAt
+      joinStatus
+      points
+      isOwner
+      hasVoted
     }
   }
 }

@@ -3,6 +3,9 @@ import { Formik, Form } from "formik";
 import { useRouter } from "next/router";
 import React, { Fragment } from "react";
 import {
+    Post,
+    PostCommentsDocument,
+    PostCommentsQuery,
     RegularUserFragment,
     useCreateCommentMutation,
 } from "~/generated/graphql";
@@ -28,12 +31,40 @@ const PostComment: React.FC<PostCommentProps> = ({ postId, me }) => {
                             initialValues={{ content: "" }}
                             onSubmit={async (
                                 values,
-                                { setErrors },
+                                { setErrors, resetForm },
                             ) => {
                                 const response = await createComment({
                                     variables: {
                                         postId: postId,
                                         content: values.content,
+                                    },
+                                    update: (store, { data }) => {
+                                        const commentsData = store.readQuery<
+                                            PostCommentsQuery
+                                        >({
+                                            query: PostCommentsDocument,
+                                            variables: {
+                                                postId: postId,
+                                            },
+                                        });
+                                        store.writeQuery<
+                                            PostCommentsQuery
+                                        >({
+                                            query: PostCommentsDocument,
+                                            variables: {
+                                                postId: postId,
+                                            },
+
+                                            data: {
+                                                postComments: [
+                                                    ...commentsData!
+                                                        .postComments,
+                                                    data!
+                                                        .createComment
+                                                        .comment,
+                                                ],
+                                            },
+                                        });
                                     },
                                 });
                                 if (
@@ -47,7 +78,11 @@ const PostComment: React.FC<PostCommentProps> = ({ postId, me }) => {
                                     );
                                 }
 
-                                router.reload();
+                                resetForm({
+                                    values: {
+                                        content: "",
+                                    },
+                                });
                             }}
                         >
                             {({ isSubmitting }) => (
