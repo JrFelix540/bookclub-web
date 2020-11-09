@@ -1,11 +1,4 @@
-import {
-    Box,
-    Flex,
-    Icon,
-    List,
-    ListItem,
-    Text,
-} from "@chakra-ui/core";
+import { Box, Flex, List, ListItem, Text } from "@chakra-ui/core";
 import React from "react";
 import { useCommunityWithIdsQuery } from "~/generated/graphql";
 import Card from "./Card";

@@ -5,5 +5,8 @@ query Community($id: Float!) {
         memberIds
         dateCreated
         description
+        creator {
+            id
+        }
     }
 }

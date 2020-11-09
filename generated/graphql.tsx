@@ -617,6 +617,10 @@ export type CommunityQuery = (
   & { community: (
     { __typename?: 'Community' }
     & Pick<Community, 'name' | 'hasJoined' | 'memberIds' | 'dateCreated' | 'description'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
   ) }
 );
 
@@ -1332,6 +1336,9 @@ export const CommunityDocument = gql`
     memberIds
     dateCreated
     description
+    creator {
+      id
+    }
   }
 }
     `;

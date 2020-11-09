@@ -52,6 +52,7 @@ const PostPage: React.FC = () => {
                     <Flex mt={10}>
                         <SidebarsPost
                             communityId={data.post.community.id}
+                            me={meData.me}
                         />
                     </Flex>
                 </Grid>

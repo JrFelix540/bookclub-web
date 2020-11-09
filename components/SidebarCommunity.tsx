@@ -1,16 +1,21 @@
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/core";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import NextLink from "next/link";
 import Card from "./Card";
-import { useCommunityQuery } from "~/generated/graphql";
-import fromUnixTime from "date-fns/fromUnixTime";
+import {
+    RegularUserFragment,
+    useCommunityQuery,
+} from "~/generated/graphql";
+import { findInArray } from "~/utils/findInArray";
 
 interface SidebarCommunityProps {
     id: number;
+    me: RegularUserFragment;
 }
 
 const SidebarCommunity: React.FC<SidebarCommunityProps> = ({
     id,
+    me,
 }) => {
     const { data, loading } = useCommunityQuery({
         variables: {
@@ -61,7 +66,10 @@ const SidebarCommunity: React.FC<SidebarCommunityProps> = ({
                                 {data.community.dateCreated}
                             </Text>
                         </Box>
-                        {data.community.hasJoined ? (
+                        {findInArray(
+                            data.community.memberIds,
+                            me?.id,
+                        ) ? (
                             <Flex mt={2} direction="column">
                                 <Box
                                     w="100%"
