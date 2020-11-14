@@ -1,8 +1,12 @@
 import { Flex, Image, Text } from "@chakra-ui/core";
 import React, { Fragment } from "react";
+import { RegularUserFragment } from "~/generated/graphql";
 import Card from "./Card";
 
-const ExploreCard: React.FC = () => {
+interface ExploreCardProps {
+    me: RegularUserFragment;
+}
+const ExploreCard: React.FC<ExploreCardProps> = ({ me }) => {
     return (
         <Fragment>
             <Card width="100%">
@@ -18,10 +22,19 @@ const ExploreCard: React.FC = () => {
                         width="auto"
                         mb={4}
                     />
-                    <Text mb={2} textAlign="center" p={4}>
-                        Oops? It seems that your subscribed bookclubs
-                        have no posts yet! Try our explore page.
-                    </Text>
+                    {me ? (
+                        <Text mb={2} textAlign="center" p={4}>
+                            Oops? It seems that your subscribed
+                            bookclubs have no posts yet! Try our
+                            explore page.
+                        </Text>
+                    ) : (
+                        <Text mb={2} textAlign="center" p={4}>
+                            It seems like you're not logged in! Login
+                            to get a customized feed with all your
+                            favorite bookclubs.
+                        </Text>
+                    )}
                 </Flex>
             </Card>
         </Fragment>

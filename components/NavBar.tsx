@@ -19,6 +19,7 @@ import { useRouter } from "next/dist/client/router";
 import {
     MeDocument,
     MeQuery,
+    MyCommunitiesPostsDocument,
     PostsDocument,
     RegularUserFragment,
     useLogoutMutation,
@@ -84,22 +85,13 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                             <Card width="150px">
                                 <List padding="10px 15px">
                                     <ListItem mb={2}>
-                                        <Link onClick={() => {}}>
-                                            Profile
+                                        <Link href="/create-post">
+                                            Create Post
                                         </Link>
                                     </ListItem>
                                     <ListItem mb={2}>
-                                        <Link>
-                                            <NextLink href="/create-post">
-                                                Create Post
-                                            </NextLink>
-                                        </Link>
-                                    </ListItem>
-                                    <ListItem mb={2}>
-                                        <Link>
-                                            <NextLink href="/create-bookclub">
-                                                Create Bookclub
-                                            </NextLink>
+                                        <Link href="/create-bookclub">
+                                            Create Bookclub
                                         </Link>
                                     </ListItem>
                                     <ListItem mb={2}>
@@ -109,6 +101,9 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                                                     refetchQueries: [
                                                         {
                                                             query: PostsDocument,
+                                                        },
+                                                        {
+                                                            query: MyCommunitiesPostsDocument,
                                                         },
                                                     ],
                                                     update: (

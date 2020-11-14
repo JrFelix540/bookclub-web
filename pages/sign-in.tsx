@@ -9,6 +9,7 @@ import Logo from "~/components/Logo";
 import {
     MeDocument,
     MeQuery,
+    MyCommunitiesPostsDocument,
     PostsDocument,
     useLoginMutation,
 } from "~/generated/graphql";
@@ -77,6 +78,9 @@ const Login: React.FC = () => {
                                         },
                                         refetchQueries: [
                                             { query: PostsDocument },
+                                            {
+                                                query: MyCommunitiesPostsDocument,
+                                            },
                                         ],
                                     });
 

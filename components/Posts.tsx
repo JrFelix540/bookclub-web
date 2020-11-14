@@ -25,6 +25,10 @@ const Posts: React.FC<PostsProps> = ({ me }) => {
         return <p>Loading posts...</p>;
     }
 
+    if (!data || !myCommunitiesPosts) {
+        return <p>Could not return posts</p>;
+    }
+
     return (
         <Fragment>
             <Flex mb={4} w="100%">
@@ -90,9 +94,11 @@ const Posts: React.FC<PostsProps> = ({ me }) => {
             {active === "user" ? (
                 <>
                     <Flex direction="column" w="100%">
-                        {myCommunitiesPosts?.myCommunitiesPosts
-                            .length === undefined ? (
-                            <ExploreCard />
+                        {myCommunitiesPosts.myCommunitiesPosts ===
+                            null ||
+                        myCommunitiesPosts.myCommunitiesPosts
+                            .length === 0 ? (
+                            <ExploreCard me={me} />
                         ) : (
                             myCommunitiesPosts?.myCommunitiesPosts?.map(
                                 (post) => (
