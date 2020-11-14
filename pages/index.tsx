@@ -23,11 +23,25 @@ const Home = () => {
 
             <NavBar me={data.me} />
             <Wrapper>
-                <Grid templateColumns="2fr 1fr" columnGap="20px">
-                    <Flex>
-                        <Posts />
+                <Grid
+                    templateColumns={{
+                        base: "1fr",
+                        lg: "2fr 1fr",
+                    }}
+                    columnGap="20px"
+                >
+                    <Flex direction="column" mt={10}>
+                        <Posts me={data.me} />
                     </Flex>
-                    <Flex>
+                    <Flex
+                        display={{
+                            base: "none",
+                            sm: "none",
+                            md: "flex",
+                            lg: "flex",
+                            xl: "flex",
+                        }}
+                    >
                         <SidebarsHome me={data.me} />
                     </Flex>
                 </Grid>

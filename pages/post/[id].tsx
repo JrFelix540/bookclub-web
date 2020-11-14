@@ -42,14 +42,26 @@ const PostPage: React.FC = () => {
             </Head>
             <NavBar me={meData.me} />
             <Wrapper>
-                <Grid templateColumns="2fr 1fr" columnGap="20px">
+                <Grid
+                    templateColumns={{
+                        base: "1fr",
+                        lg: "2fr 1fr",
+                    }}
+                    columnGap="20px"
+                >
                     <Flex mt={10}>
                         <FullPostCard
                             post={data.post}
                             me={meData.me}
                         />
                     </Flex>
-                    <Flex mt={10}>
+                    <Flex
+                        mt={10}
+                        display={{
+                            base: "none",
+                            lg: "flex",
+                        }}
+                    >
                         <SidebarsPost
                             communityId={data.post.community.id}
                             me={meData.me}

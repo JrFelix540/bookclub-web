@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/core";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import NextLink from "next/link";
 import Card from "./Card";
 import {

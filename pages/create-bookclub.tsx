@@ -35,7 +35,7 @@ const CreateCommunity: React.FC = () => {
                     <Card width="fit-content">
                         <Flex
                             justifyContent="center"
-                            p="20px 40px"
+                            p="20px "
                             direction="column"
                         >
                             <Box>
@@ -77,7 +77,10 @@ const CreateCommunity: React.FC = () => {
                                                 name="name"
                                                 label="Name "
                                                 placeholder="Name of BookClub"
-                                                width="350px"
+                                                width={{
+                                                    base: "300px",
+                                                    md: "500px",
+                                                }}
                                             />
                                         </Box>
                                         <Box mt={2}>
@@ -85,7 +88,10 @@ const CreateCommunity: React.FC = () => {
                                                 name="description"
                                                 label="Description"
                                                 placeholder="A short description of the BookClub"
-                                                width="350px"
+                                                width={{
+                                                    base: "300px",
+                                                    md: "500px",
+                                                }}
                                             />
                                         </Box>
                                         <Flex

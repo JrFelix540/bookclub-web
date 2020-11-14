@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Icon, Link, Text } from "@chakra-ui/core";
 import React, { Fragment } from "react";
 import {
+    MyCommunitiesPostsDocument,
     PostsDocument,
     RegularPostFragment,
     useJoinCommunityMutation,
@@ -35,7 +36,15 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                 ml={4}
                             >
                                 <Text fontSize="sm">
-                                    Posted in c/{post.community.name}{" "}
+                                    Posted in c/
+                                    <NextLink
+                                        href="/bookclub/[id]"
+                                        as={`/bookclub/${post.community.id}`}
+                                    >
+                                        <Link>
+                                            {post.community.name}
+                                        </Link>
+                                    </NextLink>{" "}
                                     by u/{post.creator.username}
                                 </Text>
                                 {post.joinStatus ? (
@@ -57,6 +66,9 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                                     {
                                                         query: PostsDocument,
                                                     },
+                                                    {
+                                                        query: MyCommunitiesPostsDocument,
+                                                    },
                                                 ],
                                             });
                                         }}
@@ -71,13 +83,24 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                     as={`post/${post.id}`}
                                 >
                                     <Link
-                                        fontSize="2xl"
+                                        fontSize={{
+                                            base: "lg",
+                                            md: "2xl",
+                                        }}
                                         fontWeight="700"
                                     >
                                         {post.title}
                                     </Link>
                                 </NextLink>
-                                <Text isTruncated>
+                                <Text
+                                    isTruncated
+                                    maxW={{
+                                        base: "250px",
+                                        sm: "500px",
+                                        md: "700px",
+                                        lg: "900px",
+                                    }}
+                                >
                                     {post.content}
                                 </Text>
                             </Flex>

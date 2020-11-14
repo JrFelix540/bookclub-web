@@ -1,91 +1,110 @@
-import { Box, Avatar, Button, Alert, AlertIcon } from '@chakra-ui/core'
-import { Formik, Form } from 'formik'
-import React, { Fragment, useState } from 'react'
-import Card from '~/components/Card'
-import InputTextField from '~/components/InputTextField'
-import Wrapper from '~/components/Wrapper'
-import { useForgorPasswordMutation } from '~/generated/graphql'
-import { withApollo } from '~/utils/withApollo'
+import {
+    Box,
+    Avatar,
+    Button,
+    Alert,
+    AlertIcon,
+    Text,
+    Link,
+} from "@chakra-ui/core";
+import { Formik, Form } from "formik";
+import React, { Fragment, useState } from "react";
+import Card from "~/components/Card";
+import InputTextField from "~/components/InputTextField";
+import Logo from "~/components/Logo";
+import Wrapper from "~/components/Wrapper";
+import { useForgorPasswordMutation } from "~/generated/graphql";
+import { withApollo } from "~/utils/withApollo";
 
 const ForgotPassword: React.FC = () => {
-
-    const [forgotPassword, {}] = useForgorPasswordMutation()
-    const [showAlert, setShowAlert] = useState<boolean>(false)
+    const [forgotPassword, {}] = useForgorPasswordMutation();
+    const [showAlert, setShowAlert] = useState<boolean>(false);
     return (
         <Fragment>
             <Wrapper>
-                <Box display="flex" justifyContent="center" alignItems="center" mt={20}>
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    mt={20}
+                >
                     <Card width="fit-content">
-                        <Box 
-                        display="flex" 
-                        flexDirection="column" 
-                        alignItems="center" 
-                        padding="20px 40px"
-                        width="500px"
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            padding="20px 40px"
+                            width={{
+                                base: "300px",
+                                md: "500px",
+                            }}
                         >
-                            <Avatar name="Logo" src="/book.png" backgroundColor="#e7e7de"/>
-                            <p>Forgot Password to BookClub ? No worries!</p>
-                            { showAlert && (
+                            <Box mb={4}>
+                                <Link href="/">
+                                    <Logo />
+                                </Link>
+                            </Box>
+                            <Text>
+                                Forgot Password to BookClub ? No
+                                worries!
+                            </Text>
+                            {showAlert && (
                                 <Alert status="success">
                                     <AlertIcon />
                                     Email sent ! Check your mail
-                              </Alert>
-                            
+                                </Alert>
                             )}
                             <Formik
-                                initialValues={{email: ""}}
-                                onSubmit= {
-                                    async(values) => {
-                                        await forgotPassword({
-                                            variables: {
-                                                email: values.email
-                                            }
-                                        })
+                                initialValues={{ email: "" }}
+                                onSubmit={async (values) => {
+                                    await forgotPassword({
+                                        variables: {
+                                            email: values.email,
+                                        },
+                                    });
 
-                                        setShowAlert(true)
-                                        
-                                    }
-
-                                }
+                                    setShowAlert(true);
+                                }}
                             >
-                                {
-                                    ({isSubmitting}) => 
-                                    (<Form>
+                                {({ isSubmitting }) => (
+                                    <Form>
                                         <Box mt={4}>
-                                            <InputTextField 
-                                            name="email" 
-                                            label="Email" 
-                                            placeholder="Enter email address to get reset link"
-                                            width="350px"
+                                            <InputTextField
+                                                name="email"
+                                                label="Email"
+                                                placeholder="Enter email address to get reset link"
+                                                width={{
+                                                    base: "250px",
+                                                    md: "350px",
+                                                }}
                                             />
-                                        </Box>   
+                                        </Box>
                                         <Box mt={4}>
-                                            <Button 
-                                            type="submit"
-                                            isLoading={isSubmitting}
-                                            width="350px"
-                                            variant="solid"
-                                            backgroundColor="#0f3057"
-                                            color="#fff"
+                                            <Button
+                                                type="submit"
+                                                isLoading={
+                                                    isSubmitting
+                                                }
+                                                variant="solid"
+                                                backgroundColor="#0f3057"
+                                                color="#fff"
+                                                width={{
+                                                    base: "250px",
+                                                    md: "350px",
+                                                }}
                                             >
                                                 Send Email
                                             </Button>
-                                        </Box>    
+                                        </Box>
                                     </Form>
-                                    )
-                                }
+                                )}
                             </Formik>
-                           
                         </Box>
-                        
                     </Card>
                 </Box>
-                
-
             </Wrapper>
         </Fragment>
-    )
-}
+    );
+};
 
-
-export default withApollo()(ForgotPassword)
+export default withApollo()(ForgotPassword);

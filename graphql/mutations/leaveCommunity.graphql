@@ -1,0 +1,9 @@
+mutation LeaveCommunity($communityId: Float!) {
+    leaveCommunity(communityId: $communityId) {
+        ok
+        errors {
+            field
+            message
+        }
+    }
+}

@@ -24,6 +24,7 @@ import {
     useLogoutMutation,
     useMeQuery,
 } from "~/generated/graphql";
+import Logo from "./Logo";
 
 interface NavBarProps {
     me: RegularUserFragment;
@@ -31,7 +32,6 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({ me }) => {
     const router = useRouter();
-    // const { data, loading } = useMeQuery();
     const [showMenu, setShowMenu] = useState<boolean>(false);
     const [logout, {}] = useLogoutMutation();
     let AuthSection: JSX.Element | null = null;
@@ -75,15 +75,34 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                 </Link>
                 {showMenu && (
                     <Box position="relative">
-                        <Box position="absolute" top="50px" right="0">
-                            <Card width="100%">
+                        <Box
+                            position="absolute"
+                            top="50px"
+                            right="0"
+                            zIndex={10}
+                        >
+                            <Card width="150px">
                                 <List padding="10px 15px">
-                                    <ListItem>
+                                    <ListItem mb={2}>
                                         <Link onClick={() => {}}>
                                             Profile
                                         </Link>
                                     </ListItem>
-                                    <ListItem>
+                                    <ListItem mb={2}>
+                                        <Link>
+                                            <NextLink href="/create-post">
+                                                Create Post
+                                            </NextLink>
+                                        </Link>
+                                    </ListItem>
+                                    <ListItem mb={2}>
+                                        <Link>
+                                            <NextLink href="/create-bookclub">
+                                                Create Bookclub
+                                            </NextLink>
+                                        </Link>
+                                    </ListItem>
+                                    <ListItem mb={2}>
                                         <Link
                                             onClick={async () => {
                                                 await logout({
@@ -131,20 +150,11 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                         justifyContent="space-between"
                     >
                         <Box>
-                            <NextLink href="/">
-                                <Box>
-                                    <Link>
-                                        <Flex alignItems="center">
-                                            <Image
-                                                src="/book.png"
-                                                alt="BookClub Logo"
-                                                size="40px"
-                                            />
-                                            <Text>BookClub</Text>
-                                        </Flex>
-                                    </Link>
-                                </Box>
-                            </NextLink>
+                            <Box>
+                                <Link href="/">
+                                    <Logo />
+                                </Link>
+                            </Box>
                         </Box>
                         <Box>
                             <Flex>{AuthSection}</Flex>

@@ -68,12 +68,24 @@ const FullPostCard: React.FC<FullPostCardProps> = ({ post, me }) => {
                                 </Flex>
                                 <Flex direction="column" ml={4}>
                                     <Text
-                                        fontSize="2xl"
+                                        fontSize={{
+                                            base: "lg",
+                                            md: "2xl",
+                                        }}
                                         fontWeight="700"
                                     >
                                         {post.title}
                                     </Text>
-                                    <Text>{post.content}</Text>
+                                    <Text
+                                        maxW={{
+                                            base: "250px",
+                                            sm: "500px",
+                                            md: "700px",
+                                            lg: "900px",
+                                        }}
+                                    >
+                                        {post.content}
+                                    </Text>
                                 </Flex>
                                 <Flex
                                     justifyContent="flex-end"

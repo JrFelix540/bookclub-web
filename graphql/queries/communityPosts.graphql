@@ -1,0 +1,25 @@
+query CommunityPosts($communityId: Float!) {
+    communityPosts(communityId: $communityId) {
+        id
+        title
+        content
+        creator {
+            id
+            username
+        }
+        upvotes {
+            value
+        }
+        community {
+            id
+            name
+        }
+        contentSnippet
+        createdAt
+        updatedAt
+        joinStatus
+        points
+        isOwner
+        hasVoted
+    }
+}

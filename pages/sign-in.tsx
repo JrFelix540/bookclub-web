@@ -1,9 +1,11 @@
-import { Avatar, Box, Button, Link, Text } from "@chakra-ui/core";
+import { Avatar, Box, Button, Link } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/dist/client/router";
+import NextLink from "next/link";
 import React, { Fragment, useState } from "react";
 import Card from "~/components/Card";
 import InputTextField from "~/components/InputTextField";
+import Logo from "~/components/Logo";
 import {
     MeDocument,
     MeQuery,
@@ -12,7 +14,6 @@ import {
 } from "~/generated/graphql";
 import { formatErrorMessage } from "~/utils/formatError";
 import { withApollo } from "~/utils/withApollo";
-import NextLink from "next/link";
 import Wrapper from "../components/Wrapper";
 const Login: React.FC = () => {
     const [login, {}] = useLoginMutation();
@@ -34,13 +35,16 @@ const Login: React.FC = () => {
                             flexDirection="column"
                             alignItems="center"
                             padding="20px 40px"
-                            width="500px"
+                            width={{
+                                base: "300px",
+                                md: "500px",
+                            }}
                         >
-                            <Avatar
-                                name="Logo"
-                                src="/book.png"
-                                backgroundColor="#e7e7de"
-                            />
+                            <Box mb={6}>
+                                <Link>
+                                    <Logo />
+                                </Link>
+                            </Box>
                             <p>Login to BookClub</p>
                             <Formik
                                 initialValues={{
@@ -98,7 +102,10 @@ const Login: React.FC = () => {
                                                 name="usernameOrEmail"
                                                 label="Username or Email"
                                                 placeholder="Username or Email"
-                                                width="350px"
+                                                width={{
+                                                    base: "250px",
+                                                    md: "350px",
+                                                }}
                                             />
                                         </Box>
                                         <Box mt={4}>
@@ -107,14 +114,19 @@ const Login: React.FC = () => {
                                                 label="Password"
                                                 placeholder="Password"
                                                 type="password"
-                                                width="350px"
+                                                width={{
+                                                    base: "250px",
+                                                    md: "350px",
+                                                }}
                                             />
                                         </Box>
                                         <Box mt={4}>
                                             <Button
                                                 type="submit"
                                                 isLoading={loading}
-                                                width="350px"
+                                                width={{
+                                                    base: "250px",
+                                                }}
                                                 variant="solid"
                                                 backgroundColor="#0f3057"
                                                 color="#fff"
@@ -126,6 +138,9 @@ const Login: React.FC = () => {
                                             display="flex"
                                             justifyContent="space-between"
                                             width="100%"
+                                            flexDirection={{
+                                                base: "column",
+                                            }}
                                             mt={2}
                                         >
                                             <NextLink href="/forgot-password">

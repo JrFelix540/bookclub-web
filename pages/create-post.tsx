@@ -48,8 +48,14 @@ const CreatePost: React.FC = () => {
             </Head>
             <NavBar me={meData.me} />
             <Wrapper>
-                <Grid templateColumns="2fr 1fr" columnGap="40px">
-                    <Flex mt={10}>
+                <Flex
+                    w={{
+                        base: "auto",
+                        lg: "60%",
+                    }}
+                    justifyContent="center"
+                >
+                    <Flex mt={10} w="100%" justifyContent="center">
                         <Card width="100%">
                             <Box p={5}>
                                 <Box>
@@ -177,8 +183,7 @@ const CreatePost: React.FC = () => {
                             </Box>
                         </Card>
                     </Flex>
-                    <Flex></Flex>
-                </Grid>
+                </Flex>
             </Wrapper>
         </Fragment>
     );

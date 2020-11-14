@@ -1,5 +1,6 @@
 query Community($id: Float!) {
     community(id: $id) {
+        id
         name
         hasJoined
         memberIds
