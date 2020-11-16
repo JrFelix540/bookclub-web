@@ -10,6 +10,7 @@ import {
     AvatarBadge,
     List,
     ListItem,
+    Icon,
 } from "@chakra-ui/core";
 import React, { Fragment, useState } from "react";
 import Card from "./Card";
@@ -65,15 +66,31 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
     if (me) {
         AuthSection = (
             <>
-                <Link
-                    onClick={() => {
-                        setShowMenu(!showMenu);
-                    }}
-                >
-                    <Avatar size="sm">
-                        <AvatarBadge size="1.25em" bg="green.500" />
-                    </Avatar>
-                </Link>
+                <Flex>
+                    <Flex mr={4}>
+                        <Avatar size="sm">
+                            <AvatarBadge
+                                size="1.25em"
+                                bg="green.500"
+                            />
+                        </Avatar>
+                        <Flex alignItems="flex-end" marginX={1}>
+                            <Text>{me.username}</Text>
+                        </Flex>
+                    </Flex>
+                    <Flex alignItems="center">
+                        <Link
+                            onClick={() => {
+                                setShowMenu(!showMenu);
+                            }}
+                        >
+                            <Icon
+                                name="triangle-down"
+                                fontSize="12px"
+                            />
+                        </Link>
+                    </Flex>
+                </Flex>
                 {showMenu && (
                     <Box position="relative">
                         <Box

@@ -10,11 +10,13 @@ import React, { Fragment } from "react";
 import Card from "~/components/Card";
 import CommunityPosts from "~/components/CommunityPosts";
 import NavBar from "~/components/NavBar";
-import PostComment from "~/components/PostComment";
 import SidebarsCommunityPage from "~/components/SidebarsCommunityPage";
 import Wrapper from "~/components/Wrapper";
 import {
+    CommunityDocument,
+    CommunityPostsDocument,
     PostDocument,
+    PostsDocument,
     useCommunityQuery,
     useJoinCommunityMutation,
     useLeaveCommunityMutation,
@@ -75,6 +77,23 @@ const BookClubPage: React.FC = () => {
                                                         data.community
                                                             .id,
                                                 },
+                                                refetchQueries: [
+                                                    {
+                                                        query: PostsDocument,
+                                                    },
+                                                    {
+                                                        query: CommunityDocument,
+                                                        variables: {
+                                                            id: intId,
+                                                        },
+                                                    },
+                                                    {
+                                                        query: CommunityPostsDocument,
+                                                        variables: {
+                                                            communityId: intId,
+                                                        },
+                                                    },
+                                                ],
                                             },
                                         );
                                     }}
@@ -95,7 +114,19 @@ const BookClubPage: React.FC = () => {
                                                     },
                                                     refetchQueries: [
                                                         {
-                                                            query: PostDocument,
+                                                            query: PostsDocument,
+                                                        },
+                                                        {
+                                                            query: CommunityDocument,
+                                                            variables: {
+                                                                id: intId,
+                                                            },
+                                                        },
+                                                        {
+                                                            query: CommunityPostsDocument,
+                                                            variables: {
+                                                                communityId: intId,
+                                                            },
                                                         },
                                                     ],
                                                 },
