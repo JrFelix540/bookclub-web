@@ -82,11 +82,17 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
                                             >({
                                                 query: PostsDocument,
                                                 data: {
-                                                    posts: postsData.posts.filter(
-                                                        (post) =>
-                                                            post.id !==
-                                                            id,
-                                                    ),
+                                                    posts: {
+                                                        posts: postsData.posts.posts.filter(
+                                                            (post) =>
+                                                                post.id !==
+                                                                id,
+                                                        ),
+                                                        hasMore:
+                                                            postsData
+                                                                .posts
+                                                                .hasMore,
+                                                    },
                                                 },
                                             });
                                         },

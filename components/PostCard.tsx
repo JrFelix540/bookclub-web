@@ -10,6 +10,8 @@ import Card from "./Card";
 import DeleteModal from "./DeleteModal";
 import Upvote from "./Upvote";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
+import { checkAuthFromResponse } from "~/utils/checkAuthFromResponse";
 
 interface PostCardProps {
     post: RegularPostFragment;
@@ -17,7 +19,7 @@ interface PostCardProps {
 
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
     const [joinCommunity, {}] = useJoinCommunityMutation();
-
+    const router = useRouter();
     return (
         <Fragment>
             <Card width="100%" mb={4}>
@@ -35,18 +37,28 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                 alignItems="center"
                                 ml={4}
                             >
-                                <Text fontSize="sm">
-                                    Posted in c/
-                                    <NextLink
-                                        href="/bookclub/[id]"
-                                        as={`/bookclub/${post.community.id}`}
-                                    >
-                                        <Link>
-                                            {post.community.name}
-                                        </Link>
-                                    </NextLink>{" "}
-                                    by u/{post.creator.username}
-                                </Text>
+                                <Flex
+                                    direction={{
+                                        base: "column",
+                                        md: "row",
+                                    }}
+                                >
+                                    <Text fontSize="sm" mr={1}>
+                                        Posted in c/
+                                        <NextLink
+                                            href="/bookclub/[id]"
+                                            as={`/bookclub/${post.community.id}`}
+                                        >
+                                            <Link>
+                                                {post.community.name}
+                                            </Link>
+                                        </NextLink>{" "}
+                                    </Text>
+                                    <Text fontSize="sm">
+                                        by u/
+                                        {post.creator.username}
+                                    </Text>
+                                </Flex>
                                 {post.joinStatus ? (
                                     <Icon
                                         name="check-circle"
@@ -56,21 +68,48 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                 ) : (
                                     <Button
                                         onClick={async () => {
-                                            await joinCommunity({
-                                                variables: {
-                                                    id:
-                                                        post.community
-                                                            .id,
+                                            const response = await joinCommunity(
+                                                {
+                                                    variables: {
+                                                        id:
+                                                            post
+                                                                .community
+                                                                .id,
+                                                    },
+                                                    refetchQueries: [
+                                                        {
+                                                            query: PostsDocument,
+                                                            variables: {
+                                                                limit: 10,
+                                                            },
+                                                        },
+                                                        {
+                                                            query: MyCommunitiesPostsDocument,
+                                                            variables: {
+                                                                limit: 10,
+                                                            },
+                                                        },
+                                                    ],
                                                 },
-                                                refetchQueries: [
-                                                    {
-                                                        query: PostsDocument,
-                                                    },
-                                                    {
-                                                        query: MyCommunitiesPostsDocument,
-                                                    },
-                                                ],
-                                            });
+                                            );
+
+                                            if (
+                                                response.data
+                                                    .joinCommunity
+                                                    .errors
+                                            ) {
+                                                if (
+                                                    checkAuthFromResponse(
+                                                        response.data
+                                                            .joinCommunity
+                                                            .errors,
+                                                    )
+                                                ) {
+                                                    router.replace(
+                                                        `/sign-in`,
+                                                    );
+                                                }
+                                            }
                                         }}
                                     >
                                         Join
@@ -80,7 +119,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                             <Flex direction="column" ml={4}>
                                 <NextLink
                                     href="/post/[id]"
-                                    as={`post/${post.id}`}
+                                    as={`/post/${post.id}`}
                                 >
                                     <Link
                                         fontSize={{

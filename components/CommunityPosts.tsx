@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/core";
 import React, { Fragment } from "react";
 import { useCommunityPostsQuery } from "~/generated/graphql";
+import EmptyCommunityPosts from "./EmptyCommunityPosts";
 import PostCard from "./PostCard";
 
 interface CommunityPostsProps {
@@ -13,6 +14,7 @@ const CommunityPosts: React.FC<CommunityPostsProps> = ({
     const { data, loading } = useCommunityPostsQuery({
         variables: {
             communityId,
+            limit: 10,
         },
     });
 
@@ -23,9 +25,13 @@ const CommunityPosts: React.FC<CommunityPostsProps> = ({
     return (
         <Fragment>
             <Flex direction="column" w="100%">
-                {data.communityPosts.map((post) => (
-                    <PostCard post={post} key={post.id} />
-                ))}
+                {data.communityPosts.posts.length === 0 ? (
+                    <EmptyCommunityPosts />
+                ) : (
+                    data.communityPosts.posts.map((post) => (
+                        <PostCard post={post} key={post.id} />
+                    ))
+                )}
             </Flex>
         </Fragment>
     );

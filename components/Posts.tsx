@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Link } from "@chakra-ui/core";
+import { Box, Button, Flex, Image, Link } from "@chakra-ui/core";
 import React, { Fragment, useState } from "react";
 import {
     RegularUserFragment,
@@ -15,11 +15,20 @@ interface PostsProps {
 
 const Posts: React.FC<PostsProps> = ({ me }) => {
     const [active, setActive] = useState<"guest" | "user">("guest");
-    const { data, loading } = usePostsQuery();
+    const { data, loading, fetchMore } = usePostsQuery({
+        variables: {
+            limit: 10,
+        },
+    });
     const {
         data: myCommunitiesPosts,
         loading: myPostsLoading,
-    } = useMyCommunitiesPostsQuery();
+        fetchMore: myCommunitiesFetchMore,
+    } = useMyCommunitiesPostsQuery({
+        variables: {
+            limit: 10,
+        },
+    });
 
     if (loading || myPostsLoading) {
         return <p>Loading posts...</p>;
@@ -94,28 +103,79 @@ const Posts: React.FC<PostsProps> = ({ me }) => {
             {active === "user" ? (
                 <>
                     <Flex direction="column" w="100%">
-                        {myCommunitiesPosts.myCommunitiesPosts ===
-                            null ||
-                        myCommunitiesPosts.myCommunitiesPosts
+                        {myCommunitiesPosts.myCommunitiesPosts
+                            .posts === null ||
+                        myCommunitiesPosts.myCommunitiesPosts.posts
                             .length === 0 ? (
                             <ExploreCard me={me} />
                         ) : (
-                            myCommunitiesPosts?.myCommunitiesPosts?.map(
-                                (post) => (
-                                    <PostCard
-                                        key={post.id}
-                                        post={post}
-                                    />
-                                ),
-                            )
+                            <Flex direction="column" w="100%">
+                                {myCommunitiesPosts?.myCommunitiesPosts?.posts.map(
+                                    (post) => (
+                                        <PostCard
+                                            key={post.id}
+                                            post={post}
+                                        />
+                                    ),
+                                )}
+                                <Box textAlign="center">
+                                    <Button
+                                        display={
+                                            data.posts.hasMore
+                                                ? "flex"
+                                                : "none"
+                                        }
+                                        onClick={() => {
+                                            myCommunitiesFetchMore({
+                                                variables: {
+                                                    limit: 10,
+                                                    cursor:
+                                                        myCommunitiesPosts
+                                                            .myCommunitiesPosts
+                                                            .posts[
+                                                            myCommunitiesPosts
+                                                                .myCommunitiesPosts
+                                                                .posts
+                                                                .length -
+                                                                1
+                                                        ].createdAt,
+                                                },
+                                            });
+                                        }}
+                                    >
+                                        Load More
+                                    </Button>
+                                </Box>
+                            </Flex>
                         )}
                     </Flex>
                 </>
             ) : (
                 <Flex direction="column" w="100%">
-                    {data.posts.map((post) => (
+                    {data.posts.posts.map((post) => (
                         <PostCard key={post.id} post={post} />
                     ))}
+                    <Box textAlign="center">
+                        <Button
+                            onClick={() => {
+                                fetchMore({
+                                    variables: {
+                                        limit: 10,
+                                        cursor:
+                                            data.posts.posts[
+                                                data.posts.posts
+                                                    .length - 1
+                                            ].createdAt,
+                                    },
+                                });
+                            }}
+                            display={
+                                data.posts.hasMore ? "flex" : "none"
+                            }
+                        >
+                            Load More
+                        </Button>
+                    </Box>
                 </Flex>
             )}
         </Fragment>

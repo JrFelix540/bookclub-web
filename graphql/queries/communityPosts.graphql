@@ -1,25 +1,36 @@
-query CommunityPosts($communityId: Float!) {
-    communityPosts(communityId: $communityId) {
-        id
-        title
-        content
-        creator {
+query CommunityPosts(
+    $communityId: Float!
+    $limit: Int!
+    $cursor: String
+) {
+    communityPosts(
+        communityId: $communityId
+        limit: $limit
+        cursor: $cursor
+    ) {
+        posts {
             id
-            username
+            title
+            content
+            creator {
+                id
+                username
+            }
+            upvotes {
+                value
+            }
+            community {
+                id
+                name
+            }
+            contentSnippet
+            createdAt
+            updatedAt
+            joinStatus
+            points
+            isOwner
+            hasVoted
         }
-        upvotes {
-            value
-        }
-        community {
-            id
-            name
-        }
-        contentSnippet
-        createdAt
-        updatedAt
-        joinStatus
-        points
-        isOwner
-        hasVoted
+        hasMore
     }
 }

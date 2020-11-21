@@ -23,9 +23,9 @@ export type Query = {
   postComments?: Maybe<Array<UserComment>>;
   allCommunities: Array<Community>;
   community: Community;
-  posts?: Maybe<Array<Post>>;
-  myCommunitiesPosts?: Maybe<Array<Post>>;
-  communityPosts?: Maybe<Array<Post>>;
+  posts: PaginatedPosts;
+  myCommunitiesPosts: PaginatedPosts;
+  communityPosts?: Maybe<PaginatedPosts>;
   post: Post;
 };
 
@@ -40,7 +40,21 @@ export type QueryCommunityArgs = {
 };
 
 
+export type QueryPostsArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
+};
+
+
+export type QueryMyCommunitiesPostsArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
+};
+
+
 export type QueryCommunityPostsArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
   communityId: Scalars['Float'];
 };
 
@@ -182,6 +196,19 @@ export type Review = {
 };
 
 
+export type PaginatedPosts = {
+  __typename?: 'PaginatedPosts';
+  posts?: Maybe<Array<Post>>;
+  hasMore: Scalars['Boolean'];
+  errors?: Maybe<Array<FieldError>>;
+};
+
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   register: UserResponse;
@@ -193,7 +220,6 @@ export type Mutation = {
   voteComment: CommentUpvoteResponse;
   createComment: UserCommentResponse;
   deleteAllComments: Scalars['Boolean'];
-  resetCommentPoints: Scalars['Boolean'];
   deleteComment: Scalars['Boolean'];
   createCommunity: CommunityResponse;
   joinCommunity: BooleanFieldResponse;
@@ -238,11 +264,6 @@ export type MutationVoteCommentArgs = {
 export type MutationCreateCommentArgs = {
   postId: Scalars['Float'];
   content: Scalars['String'];
-};
-
-
-export type MutationResetCommentPointsArgs = {
-  commentId: Scalars['Float'];
 };
 
 
@@ -295,12 +316,6 @@ export type UserResponse = {
   __typename?: 'UserResponse';
   errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
-};
-
-export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
 };
 
 export type UserRegisterInput = {
@@ -515,7 +530,7 @@ export type JoinCommunityMutation = (
     & Pick<BooleanFieldResponse, 'ok'>
     & { errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
-      & Pick<FieldError, 'message'>
+      & Pick<FieldError, 'field' | 'message'>
     )>> }
   ) }
 );
@@ -656,25 +671,31 @@ export type CommunityQuery = (
 
 export type CommunityPostsQueryVariables = Exact<{
   communityId: Scalars['Float'];
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
 }>;
 
 
 export type CommunityPostsQuery = (
   { __typename?: 'Query' }
-  & { communityPosts?: Maybe<Array<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
-    & { creator: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
-    ), upvotes?: Maybe<Array<(
-      { __typename?: 'Upvote' }
-      & Pick<Upvote, 'value'>
-    )>>, community: (
-      { __typename?: 'Community' }
-      & Pick<Community, 'id' | 'name'>
-    ) }
-  )>> }
+  & { communityPosts?: Maybe<(
+    { __typename?: 'PaginatedPosts' }
+    & Pick<PaginatedPosts, 'hasMore'>
+    & { posts?: Maybe<Array<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
+      & { creator: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ), upvotes?: Maybe<Array<(
+        { __typename?: 'Upvote' }
+        & Pick<Upvote, 'value'>
+      )>>, community: (
+        { __typename?: 'Community' }
+        & Pick<Community, 'id' | 'name'>
+      ) }
+    )>> }
+  )> }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -702,25 +723,32 @@ export type MeWithCommunitiesQuery = (
   )> }
 );
 
-export type MyCommunitiesPostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type MyCommunitiesPostsQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+}>;
 
 
 export type MyCommunitiesPostsQuery = (
   { __typename?: 'Query' }
-  & { myCommunitiesPosts?: Maybe<Array<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
-    & { creator: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
-    ), upvotes?: Maybe<Array<(
-      { __typename?: 'Upvote' }
-      & Pick<Upvote, 'value'>
-    )>>, community: (
-      { __typename?: 'Community' }
-      & Pick<Community, 'id' | 'name'>
-    ) }
-  )>> }
+  & { myCommunitiesPosts: (
+    { __typename?: 'PaginatedPosts' }
+    & Pick<PaginatedPosts, 'hasMore'>
+    & { posts?: Maybe<Array<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
+      & { creator: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ), upvotes?: Maybe<Array<(
+        { __typename?: 'Upvote' }
+        & Pick<Upvote, 'value'>
+      )>>, community: (
+        { __typename?: 'Community' }
+        & Pick<Community, 'id' | 'name'>
+      ) }
+    )>> }
+  ) }
 );
 
 export type PostQueryVariables = Exact<{
@@ -766,25 +794,32 @@ export type PostCommentsQuery = (
   )>> }
 );
 
-export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PostsQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+}>;
 
 
 export type PostsQuery = (
   { __typename?: 'Query' }
-  & { posts?: Maybe<Array<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
-    & { creator: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
-    ), upvotes?: Maybe<Array<(
-      { __typename?: 'Upvote' }
-      & Pick<Upvote, 'value'>
-    )>>, community: (
-      { __typename?: 'Community' }
-      & Pick<Community, 'id' | 'name'>
-    ) }
-  )>> }
+  & { posts: (
+    { __typename?: 'PaginatedPosts' }
+    & Pick<PaginatedPosts, 'hasMore'>
+    & { posts?: Maybe<Array<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
+      & { creator: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ), upvotes?: Maybe<Array<(
+        { __typename?: 'Upvote' }
+        & Pick<Upvote, 'value'>
+      )>>, community: (
+        { __typename?: 'Community' }
+        & Pick<Community, 'id' | 'name'>
+      ) }
+    )>> }
+  ) }
 );
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1131,6 +1166,7 @@ export const JoinCommunityDocument = gql`
   joinCommunity(id: $id) {
     ok
     errors {
+      field
       message
     }
   }
@@ -1480,29 +1516,32 @@ export type CommunityQueryHookResult = ReturnType<typeof useCommunityQuery>;
 export type CommunityLazyQueryHookResult = ReturnType<typeof useCommunityLazyQuery>;
 export type CommunityQueryResult = ApolloReactCommon.QueryResult<CommunityQuery, CommunityQueryVariables>;
 export const CommunityPostsDocument = gql`
-    query CommunityPosts($communityId: Float!) {
-  communityPosts(communityId: $communityId) {
-    id
-    title
-    content
-    creator {
+    query CommunityPosts($communityId: Float!, $limit: Int!, $cursor: String) {
+  communityPosts(communityId: $communityId, limit: $limit, cursor: $cursor) {
+    posts {
       id
-      username
+      title
+      content
+      creator {
+        id
+        username
+      }
+      upvotes {
+        value
+      }
+      community {
+        id
+        name
+      }
+      contentSnippet
+      createdAt
+      updatedAt
+      joinStatus
+      points
+      isOwner
+      hasVoted
     }
-    upvotes {
-      value
-    }
-    community {
-      id
-      name
-    }
-    contentSnippet
-    createdAt
-    updatedAt
-    joinStatus
-    points
-    isOwner
-    hasVoted
+    hasMore
   }
 }
     `;
@@ -1520,6 +1559,8 @@ export const CommunityPostsDocument = gql`
  * const { data, loading, error } = useCommunityPostsQuery({
  *   variables: {
  *      communityId: // value for 'communityId'
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */
@@ -1600,29 +1641,32 @@ export type MeWithCommunitiesQueryHookResult = ReturnType<typeof useMeWithCommun
 export type MeWithCommunitiesLazyQueryHookResult = ReturnType<typeof useMeWithCommunitiesLazyQuery>;
 export type MeWithCommunitiesQueryResult = ApolloReactCommon.QueryResult<MeWithCommunitiesQuery, MeWithCommunitiesQueryVariables>;
 export const MyCommunitiesPostsDocument = gql`
-    query MyCommunitiesPosts {
-  myCommunitiesPosts {
-    id
-    title
-    content
-    creator {
+    query MyCommunitiesPosts($limit: Int!, $cursor: String) {
+  myCommunitiesPosts(limit: $limit, cursor: $cursor) {
+    posts {
       id
-      username
+      title
+      content
+      creator {
+        id
+        username
+      }
+      upvotes {
+        value
+      }
+      community {
+        id
+        name
+      }
+      contentSnippet
+      createdAt
+      updatedAt
+      joinStatus
+      points
+      isOwner
+      hasVoted
     }
-    upvotes {
-      value
-    }
-    community {
-      id
-      name
-    }
-    contentSnippet
-    createdAt
-    updatedAt
-    joinStatus
-    points
-    isOwner
-    hasVoted
+    hasMore
   }
 }
     `;
@@ -1639,6 +1683,8 @@ export const MyCommunitiesPostsDocument = gql`
  * @example
  * const { data, loading, error } = useMyCommunitiesPostsQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */
@@ -1748,29 +1794,32 @@ export type PostCommentsQueryHookResult = ReturnType<typeof usePostCommentsQuery
 export type PostCommentsLazyQueryHookResult = ReturnType<typeof usePostCommentsLazyQuery>;
 export type PostCommentsQueryResult = ApolloReactCommon.QueryResult<PostCommentsQuery, PostCommentsQueryVariables>;
 export const PostsDocument = gql`
-    query Posts {
-  posts {
-    id
-    title
-    content
-    creator {
+    query Posts($limit: Int!, $cursor: String) {
+  posts(limit: $limit, cursor: $cursor) {
+    posts {
       id
-      username
+      title
+      content
+      creator {
+        id
+        username
+      }
+      upvotes {
+        value
+      }
+      community {
+        id
+        name
+      }
+      contentSnippet
+      createdAt
+      updatedAt
+      joinStatus
+      points
+      isOwner
+      hasVoted
     }
-    upvotes {
-      value
-    }
-    community {
-      id
-      name
-    }
-    contentSnippet
-    createdAt
-    updatedAt
-    joinStatus
-    points
-    isOwner
-    hasVoted
+    hasMore
   }
 }
     `;
@@ -1787,6 +1836,8 @@ export const PostsDocument = gql`
  * @example
  * const { data, loading, error } = usePostsQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */

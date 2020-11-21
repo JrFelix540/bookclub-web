@@ -10,6 +10,7 @@ import NextLink from "next/link";
 import {
     MeDocument,
     MeQuery,
+    PostsDocument,
     useRegisterUserMutation,
 } from "~/generated/graphql";
 import { formatErrorMessage } from "~/utils/formatError";
@@ -61,6 +62,14 @@ const Register: React.FC = () => {
                                         variables: {
                                             userInput: values,
                                         },
+                                        refetchQueries: [
+                                            {
+                                                query: PostsDocument,
+                                                variables: {
+                                                    limit: 10,
+                                                },
+                                            },
+                                        ],
                                         update: (cache, { data }) => {
                                             cache.writeQuery<MeQuery>(
                                                 {

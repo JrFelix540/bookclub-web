@@ -42,7 +42,7 @@ const Login: React.FC = () => {
                             }}
                         >
                             <Box mb={6}>
-                                <Link>
+                                <Link href="/">
                                     <Logo />
                                 </Link>
                             </Box>
@@ -77,9 +77,17 @@ const Login: React.FC = () => {
                                             );
                                         },
                                         refetchQueries: [
-                                            { query: PostsDocument },
+                                            {
+                                                query: PostsDocument,
+                                                variables: {
+                                                    limit: 10,
+                                                },
+                                            },
                                             {
                                                 query: MyCommunitiesPostsDocument,
+                                                variables: {
+                                                    limit: 10,
+                                                },
                                             },
                                         ],
                                     });
@@ -144,6 +152,7 @@ const Login: React.FC = () => {
                                             width="100%"
                                             flexDirection={{
                                                 base: "column",
+                                                md: "row",
                                             }}
                                             mt={2}
                                         >

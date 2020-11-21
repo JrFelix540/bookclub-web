@@ -7,12 +7,19 @@ import Posts from "~/components/Posts";
 import Wrapper from "~/components/Wrapper";
 import { useMeQuery } from "~/generated/graphql";
 import SidebarsHome from "~/components/SidebarsHome";
+import { isServer } from "~/utils/isServer";
 
 const Home = () => {
-    const { data, loading } = useMeQuery();
+    const { data, loading } = useMeQuery({
+        // skip: isServer(),
+    });
 
     if (loading && !data) {
-        return <p>Loading ...</p>;
+        return (
+            <>
+                <p>Loading ...</p>
+            </>
+        );
     }
 
     return (
@@ -20,7 +27,6 @@ const Home = () => {
             <Head>
                 <title>Bookclub</title>
             </Head>
-
             <NavBar me={data.me} />
             <Wrapper>
                 <Grid
@@ -50,4 +56,4 @@ const Home = () => {
     );
 };
 
-export default withApollo()(Home);
+export default withApollo({ ssr: true })(Home);

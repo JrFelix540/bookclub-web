@@ -80,31 +80,14 @@ const CreatePost: React.FC = () => {
                                                         values.communityId,
                                                     ),
                                                 },
-                                                update: (
-                                                    store,
-                                                    { data },
-                                                ) => {
-                                                    const postsData = store.readQuery<
-                                                        PostsQuery
-                                                    >({
+                                                refetchQueries: [
+                                                    {
                                                         query: PostsDocument,
-                                                    });
-
-                                                    store.writeQuery<
-                                                        PostsQuery
-                                                    >({
-                                                        query: PostsDocument,
-                                                        data: {
-                                                            posts: [
-                                                                ...postsData!
-                                                                    .posts,
-                                                                data!
-                                                                    .createPost
-                                                                    .post,
-                                                            ],
+                                                        variables: {
+                                                            limit: 10,
                                                         },
-                                                    });
-                                                },
+                                                    },
+                                                ],
                                             },
                                         );
 

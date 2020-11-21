@@ -118,9 +118,15 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                                                     refetchQueries: [
                                                         {
                                                             query: PostsDocument,
+                                                            variables: {
+                                                                limit: 10,
+                                                            },
                                                         },
                                                         {
                                                             query: MyCommunitiesPostsDocument,
+                                                            variables: {
+                                                                limit: 10,
+                                                            },
                                                         },
                                                     ],
                                                     update: (

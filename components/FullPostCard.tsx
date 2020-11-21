@@ -11,6 +11,8 @@ import Upvote from "./Upvote";
 import NextLink from "next/link";
 import PostComment from "./PostComment";
 import Comments from "./Comments";
+import { checkAuthFromResponse } from "~/utils/checkAuthFromResponse";
+import { useRouter } from "next/router";
 
 interface FullPostCardProps {
     post: RegularPostFragment;
@@ -18,6 +20,7 @@ interface FullPostCardProps {
 }
 
 const FullPostCard: React.FC<FullPostCardProps> = ({ post, me }) => {
+    const router = useRouter();
     const [joinCommunity, {}] = useJoinCommunityMutation();
 
     return (
@@ -52,14 +55,35 @@ const FullPostCard: React.FC<FullPostCardProps> = ({ post, me }) => {
                                     ) : (
                                         <Button
                                             onClick={async () => {
-                                                await joinCommunity({
-                                                    variables: {
-                                                        id:
-                                                            post
-                                                                .community
-                                                                .id,
+                                                const response = await joinCommunity(
+                                                    {
+                                                        variables: {
+                                                            id:
+                                                                post
+                                                                    .community
+                                                                    .id,
+                                                        },
                                                     },
-                                                });
+                                                );
+
+                                                if (
+                                                    response.data
+                                                        .joinCommunity
+                                                        .errors
+                                                ) {
+                                                    if (
+                                                        checkAuthFromResponse(
+                                                            response
+                                                                .data
+                                                                .joinCommunity
+                                                                .errors,
+                                                        )
+                                                    ) {
+                                                        router.replace(
+                                                            `/sign-in`,
+                                                        );
+                                                    }
+                                                }
                                             }}
                                         >
                                             Join

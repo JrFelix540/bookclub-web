@@ -1,25 +1,28 @@
-query Posts {
-    posts {
-        id
-        title
-        content
-        creator {
+query Posts($limit: Int!, $cursor: String) {
+    posts(limit: $limit, cursor: $cursor) {
+        posts {
             id
-            username
+            title
+            content
+            creator {
+                id
+                username
+            }
+            upvotes {
+                value
+            }
+            community {
+                id
+                name
+            }
+            contentSnippet
+            createdAt
+            updatedAt
+            joinStatus
+            points
+            isOwner
+            hasVoted
         }
-        upvotes {
-            value
-        }
-        community {
-            id
-            name
-        }
-        contentSnippet
-        createdAt
-        updatedAt
-        joinStatus
-        points
-        isOwner
-        hasVoted
+        hasMore
     }
 }

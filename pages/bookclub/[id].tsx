@@ -6,6 +6,8 @@ import {
     Grid,
     Text,
 } from "@chakra-ui/core";
+import Head from "next/head";
+import { Router, useRouter } from "next/router";
 import React, { Fragment } from "react";
 import Card from "~/components/Card";
 import CommunityPosts from "~/components/CommunityPosts";
@@ -22,6 +24,7 @@ import {
     useLeaveCommunityMutation,
     useMeQuery,
 } from "~/generated/graphql";
+import { checkAuthFromResponse } from "~/utils/checkAuthFromResponse";
 import { findInArray } from "~/utils/findInArray";
 import { useGetIntId } from "~/utils/useGetIntId";
 import { withApollo } from "~/utils/withApollo";
@@ -29,6 +32,7 @@ import { withApollo } from "~/utils/withApollo";
 const BookClubPage: React.FC = () => {
     const [joinCommunity, {}] = useJoinCommunityMutation();
     const [leaveCommunity, {}] = useLeaveCommunityMutation();
+    const router = useRouter();
     const intId = useGetIntId();
     const { data, loading } = useCommunityQuery({
         skip: intId === -1,
@@ -52,6 +56,9 @@ const BookClubPage: React.FC = () => {
 
     return (
         <Fragment>
+            <Head>
+                <title>Bookclub | {data.community.name}</title>
+            </Head>
             <NavBar me={meData.me} />
             <Box mt={10}>
                 <Card width="100%">
@@ -80,6 +87,9 @@ const BookClubPage: React.FC = () => {
                                                 refetchQueries: [
                                                     {
                                                         query: PostsDocument,
+                                                        variables: {
+                                                            limit: 10,
+                                                        },
                                                     },
                                                     {
                                                         query: CommunityDocument,
@@ -91,6 +101,7 @@ const BookClubPage: React.FC = () => {
                                                         query: CommunityPostsDocument,
                                                         variables: {
                                                             communityId: intId,
+                                                            limit: 10,
                                                         },
                                                     },
                                                 ],
@@ -115,6 +126,9 @@ const BookClubPage: React.FC = () => {
                                                     refetchQueries: [
                                                         {
                                                             query: PostsDocument,
+                                                            variables: {
+                                                                limit: 10,
+                                                            },
                                                         },
                                                         {
                                                             query: CommunityDocument,
@@ -126,11 +140,27 @@ const BookClubPage: React.FC = () => {
                                                             query: CommunityPostsDocument,
                                                             variables: {
                                                                 communityId: intId,
+                                                                limit: 10,
                                                             },
                                                         },
                                                     ],
                                                 },
                                             );
+
+                                            if (
+                                                response.data
+                                                    .joinCommunity
+                                                    .errors
+                                            ) {
+                                                checkAuthFromResponse(
+                                                    response.data
+                                                        .joinCommunity
+                                                        .errors,
+                                                ) &&
+                                                    router.replace(
+                                                        `/sign-in`,
+                                                    );
+                                            }
                                         }}
                                         variant="solid"
                                     >
@@ -186,4 +216,4 @@ const BookClubPage: React.FC = () => {
     );
 };
 
-export default withApollo()(BookClubPage);
+export default withApollo({ ssr: true })(BookClubPage);

@@ -9,6 +9,7 @@ import NavBar from "~/components/NavBar";
 import TextAreaField from "~/components/TextAreaField";
 import Wrapper from "~/components/Wrapper";
 import {
+    CommunityWithIdsDocument,
     useCreateCommunityMutation,
     useMeQuery,
 } from "~/generated/graphql";
@@ -19,7 +20,6 @@ const CreateCommunity: React.FC = () => {
     const router = useRouter();
     const [createCommunity, {}] = useCreateCommunityMutation();
     const { data, loading } = useMeQuery();
-
     if (loading && !data) {
         return <p>Loading</p>;
     }
@@ -53,6 +53,11 @@ const CreateCommunity: React.FC = () => {
                                     const response = await createCommunity(
                                         {
                                             variables: values,
+                                            refetchQueries: [
+                                                {
+                                                    query: CommunityWithIdsDocument,
+                                                },
+                                            ],
                                         },
                                     );
 
@@ -68,6 +73,10 @@ const CreateCommunity: React.FC = () => {
                                             ),
                                         );
                                     }
+
+                                    router.push(
+                                        `/bookclub/${response.data.createCommunity.community.id}`,
+                                    );
                                 }}
                             >
                                 {({ isSubmitting }) => (
@@ -103,7 +112,7 @@ const CreateCommunity: React.FC = () => {
                                                     mr={2}
                                                     onClick={() => {
                                                         router.push(
-                                                            "/",
+                                                            `/`,
                                                         );
                                                     }}
                                                 >

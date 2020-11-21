@@ -3,10 +3,15 @@ import React, { Fragment } from "react";
 import NextLink from "next/link";
 import Card from "./Card";
 import {
+    MyCommunitiesPostsDocument,
+    PostsDocument,
     RegularUserFragment,
     useCommunityQuery,
+    useJoinCommunityMutation,
 } from "~/generated/graphql";
 import { findInArray } from "~/utils/findInArray";
+import { useRouter } from "next/router";
+import { checkAuthFromResponse } from "~/utils/checkAuthFromResponse";
 
 interface SidebarCommunityProps {
     id: number;
@@ -17,6 +22,8 @@ const SidebarCommunity: React.FC<SidebarCommunityProps> = ({
     id,
     me,
 }) => {
+    const router = useRouter();
+    const [joinCommunity, {}] = useJoinCommunityMutation();
     const { data, loading } = useCommunityQuery({
         variables: {
             id,
@@ -92,7 +99,52 @@ const SidebarCommunity: React.FC<SidebarCommunityProps> = ({
                             </Flex>
                         ) : (
                             <Box>
-                                <Button w="100%" variant="solid">
+                                <Button
+                                    w="100%"
+                                    variant="solid"
+                                    onClick={async () => {
+                                        const response = await joinCommunity(
+                                            {
+                                                variables: {
+                                                    id:
+                                                        data.community
+                                                            .id,
+                                                },
+                                                refetchQueries: [
+                                                    {
+                                                        query: PostsDocument,
+                                                        variables: {
+                                                            limit: 10,
+                                                        },
+                                                    },
+                                                    {
+                                                        query: MyCommunitiesPostsDocument,
+                                                        variables: {
+                                                            limit: 10,
+                                                        },
+                                                    },
+                                                ],
+                                            },
+                                        );
+
+                                        if (
+                                            response.data
+                                                .joinCommunity.errors
+                                        ) {
+                                            if (
+                                                checkAuthFromResponse(
+                                                    response.data
+                                                        .joinCommunity
+                                                        .errors,
+                                                )
+                                            ) {
+                                                router.replace(
+                                                    `/sign-in`,
+                                                );
+                                            }
+                                        }
+                                    }}
+                                >
                                     Join
                                 </Button>
                             </Box>

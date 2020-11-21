@@ -7,6 +7,8 @@ import {
     useVoteCommentMutation,
     VoteCommentMutation,
 } from "~/generated/graphql";
+import { checkAuthFromResponse } from "~/utils/checkAuthFromResponse";
+import { useRouter } from "next/router";
 
 interface CommentUpvoteProps {
     comment: RegularCommentFragment;
@@ -54,7 +56,7 @@ const updateCommentAfterVote = (
 
 const CommentUpvote: React.FC<CommentUpvoteProps> = ({ comment }) => {
     const [voteComment, {}] = useVoteCommentMutation();
-
+    const router = useRouter();
     return (
         <Fragment>
             <Box>
@@ -75,9 +77,9 @@ const CommentUpvote: React.FC<CommentUpvoteProps> = ({ comment }) => {
                             });
 
                             if (response.data.voteComment.errors) {
-                                console.log(
+                                checkAuthFromResponse(
                                     response.data.voteComment.errors,
-                                );
+                                ) && router.replace(`/sign-in`);
                             }
                         }}
                     >
@@ -107,9 +109,14 @@ const CommentUpvote: React.FC<CommentUpvoteProps> = ({ comment }) => {
                             });
 
                             if (response.data.voteComment.errors) {
-                                console.log(
-                                    response.data.voteComment.errors,
-                                );
+                                if (
+                                    response.data.voteComment.errors
+                                ) {
+                                    checkAuthFromResponse(
+                                        response.data.voteComment
+                                            .errors,
+                                    ) && router.replace(`/sign-in`);
+                                }
                             }
                         }}
                     >

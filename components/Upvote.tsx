@@ -14,6 +14,9 @@ import {
     useVotePostMutation,
     VotePostMutation,
 } from "~/generated/graphql";
+import { useRouter } from "next/router";
+import { checkAuthFromResponse } from "~/utils/checkAuthFromResponse";
+import { route } from "next/dist/next-server/server/router";
 
 const updateAfterVote = (
     value: number,
@@ -66,7 +69,7 @@ const Upvote: React.FC<UpvoteProps> = ({ post }) => {
     const [loadingState, setLoadingState] = useState<
         "upvoteLoading" | "downvoteLoading" | "not-loading"
     >("not-loading");
-
+    const router = useRouter();
     return (
         <>
             <Box>
@@ -77,7 +80,7 @@ const Upvote: React.FC<UpvoteProps> = ({ post }) => {
                             return;
                         }
 
-                        await votePost({
+                        const response = await votePost({
                             variables: {
                                 postId: post.id,
                                 value: 1,
@@ -85,6 +88,16 @@ const Upvote: React.FC<UpvoteProps> = ({ post }) => {
                             update: (cache) =>
                                 updateAfterVote(1, post.id, cache),
                         });
+
+                        if (response.data.vote.errors) {
+                            if (
+                                checkAuthFromResponse(
+                                    response.data.vote.errors,
+                                )
+                            ) {
+                                router.replace(`/sign-in`);
+                            }
+                        }
 
                         setLoadingState("not-loading");
                     }}
@@ -106,7 +119,7 @@ const Upvote: React.FC<UpvoteProps> = ({ post }) => {
                         if (post.hasVoted === -1) {
                             return;
                         }
-                        await votePost({
+                        const response = await votePost({
                             variables: {
                                 postId: post.id,
                                 value: -1,
@@ -114,6 +127,15 @@ const Upvote: React.FC<UpvoteProps> = ({ post }) => {
                             update: (cache) =>
                                 updateAfterVote(-1, post.id, cache),
                         });
+                        if (response.data.vote.errors) {
+                            if (
+                                checkAuthFromResponse(
+                                    response.data.vote.errors,
+                                )
+                            ) {
+                                router.replace(`/sign-in`);
+                            }
+                        }
                         setLoadingState("not-loading");
                     }}
                 >
