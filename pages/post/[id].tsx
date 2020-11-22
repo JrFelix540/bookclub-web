@@ -2,6 +2,7 @@ import { Flex, Grid } from "@chakra-ui/core";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { Fragment } from "react";
+import Footer from "~/components/Footer";
 import FullPostCard from "~/components/FullPostCard";
 import NavBar from "~/components/NavBar";
 import SidebarsPost from "~/components/SIdebarsPost";

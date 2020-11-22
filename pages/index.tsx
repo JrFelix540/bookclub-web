@@ -8,6 +8,7 @@ import Wrapper from "~/components/Wrapper";
 import { useMeQuery } from "~/generated/graphql";
 import SidebarsHome from "~/components/SidebarsHome";
 import { isServer } from "~/utils/isServer";
+import Footer from "~/components/Footer";
 
 const Home = () => {
     const { data, loading } = useMeQuery({

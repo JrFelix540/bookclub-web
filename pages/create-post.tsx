@@ -19,6 +19,7 @@ import { withApollo } from "~/utils/withApollo";
 import TextAreaField from "~/components/TextAreaField";
 import { formatErrorMessage } from "~/utils/formatError";
 import { userIsAuth } from "~/utils/userIsAuth";
+import Footer from "~/components/Footer";
 
 const CreatePost: React.FC = () => {
     const router = useRouter();

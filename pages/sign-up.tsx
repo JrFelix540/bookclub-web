@@ -6,7 +6,6 @@ import Card from "~/components/Card";
 import InputTextField from "~/components/InputTextField";
 import Logo from "~/components/Logo";
 import Wrapper from "~/components/Wrapper";
-import NextLink from "next/link";
 import {
     MeDocument,
     MeQuery,
@@ -15,6 +14,7 @@ import {
 } from "~/generated/graphql";
 import { formatErrorMessage } from "~/utils/formatError";
 import { withApollo } from "~/utils/withApollo";
+import Footer from "~/components/Footer";
 
 const Register: React.FC = () => {
     const [register, {}] = useRegisterUserMutation();

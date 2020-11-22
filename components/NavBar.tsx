@@ -21,6 +21,7 @@ import {
     MeDocument,
     MeQuery,
     MyCommunitiesPostsDocument,
+    MyCommunitiesPostsQuery,
     PostsDocument,
     RegularUserFragment,
     useLogoutMutation,
@@ -140,6 +141,19 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                                                                 __typename:
                                                                     "Query",
                                                                 me: null,
+                                                            },
+                                                        });
+                                                        cache.writeQuery<
+                                                            MyCommunitiesPostsQuery
+                                                        >({
+                                                            query: MyCommunitiesPostsDocument,
+                                                            data: {
+                                                                __typename:
+                                                                    "Query",
+                                                                myCommunitiesPosts: {
+                                                                    posts: [],
+                                                                    hasMore: false,
+                                                                },
                                                             },
                                                         });
                                                     },
