@@ -23,7 +23,7 @@ export default function createApolloClient(initialState, ctx) {
             console.log(`[Network error]: ${networkError}`);
     });
     const httpLink = new HttpLink({
-        uri: "http://localhost:4040/graphql",
+        uri: `https://bookclub-server-1.herokuapp.com/graphql`,
         credentials: "include",
     });
     return new ApolloClient({
