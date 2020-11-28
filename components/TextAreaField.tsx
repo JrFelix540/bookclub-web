@@ -11,6 +11,7 @@ type InputTextFieldProps = InputHTMLAttributes<HTMLInputElement> & {
     name: string;
     label: string;
     width?: string;
+    size?: string;
 };
 
 const TextAreaField: React.FC<InputTextFieldProps> = (props) => {

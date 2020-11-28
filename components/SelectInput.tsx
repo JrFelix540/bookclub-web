@@ -1,39 +1,47 @@
-import { FormControl, FormErrorMessage, Select } from '@chakra-ui/core'
-import { useField } from 'formik'
-import React, { Fragment, SelectHTMLAttributes } from 'react'
-import { Community } from '~/generated/graphql'
+import {
+    FormControl,
+    FormErrorMessage,
+    Select,
+} from "@chakra-ui/core";
+import { useField } from "formik";
+import React, { Fragment, SelectHTMLAttributes } from "react";
 
-type SelectInputProps = SelectHTMLAttributes<HTMLSelectElement>& {
-    name: string
-    label: string
-    optionValues: Community[]
+interface ICommunity {
+    id: number;
+    name: string;
 }
 
+type SelectInputProps = SelectHTMLAttributes<HTMLSelectElement> & {
+    name: string;
+    label: string;
+    optionValues: ICommunity[];
+    size?: string;
+};
 
 const SelectInput: React.FC<SelectInputProps> = (props) => {
-    const [field, {error}] = useField(props)
+    const [field, { error }] = useField(props);
 
     return (
         <Fragment>
             <FormControl isInvalid={!!error}>
-                <Select 
-                placeholder={props.label}
-                {...field}
-                id={field.name}
-                {...props}
-                
+                <Select
+                    placeholder={props.label}
+                    {...field}
+                    id={field.name}
+                    {...props}
                 >
                     {props.optionValues?.map((val) => (
-                        <option value={val.id} key={val.name}>{val.name}</option>
+                        <option value={val.id} key={val.name}>
+                            {val.name}
+                        </option>
                     ))}
                 </Select>
-                { error && <FormErrorMessage>{error}</FormErrorMessage>}
-
+                {error && (
+                    <FormErrorMessage>{error}</FormErrorMessage>
+                )}
             </FormControl>
-            
         </Fragment>
-    )
-}
+    );
+};
 
-
-export default SelectInput
+export default SelectInput;

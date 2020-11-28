@@ -1,12 +1,9 @@
-fragment RegularComment on UserComment {
+fragment PostComment on UserComment {
     id
     content
     creator {
         id
         username
-    }
-    post {
-        id
     }
     points
     isOwner

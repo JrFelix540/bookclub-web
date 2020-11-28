@@ -17,7 +17,6 @@ fragment RegularPost on Post {
     updatedAt
     joinStatus
     points
-    contentSnippet
     hasVoted
     isOwner
 }

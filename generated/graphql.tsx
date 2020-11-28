@@ -370,9 +370,18 @@ export type RegularErrorFragment = (
   & Pick<FieldError, 'field' | 'message'>
 );
 
+export type PostCommentFragment = (
+  { __typename?: 'UserComment' }
+  & Pick<UserComment, 'id' | 'content' | 'points' | 'isOwner' | 'voteStatus'>
+  & { creator: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
+  ) }
+);
+
 export type RegularCommentFragment = (
   { __typename?: 'UserComment' }
-  & Pick<UserComment, 'id' | 'content' | 'hasVoted' | 'points' | 'createdAt' | 'updatedAt' | 'isOwner' | 'voteStatus'>
+  & Pick<UserComment, 'id' | 'content' | 'points' | 'isOwner' | 'voteStatus'>
   & { creator: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
@@ -384,7 +393,7 @@ export type RegularCommentFragment = (
 
 export type RegularPostFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'title' | 'content' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'contentSnippet' | 'hasVoted' | 'isOwner'>
+  & Pick<Post, 'id' | 'title' | 'content' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'hasVoted' | 'isOwner'>
   & { creator: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
@@ -853,11 +862,23 @@ export type VoteCommentMutation = (
   ) }
 );
 
+export const PostCommentFragmentDoc = gql`
+    fragment PostComment on UserComment {
+  id
+  content
+  creator {
+    id
+    username
+  }
+  points
+  isOwner
+  voteStatus
+}
+    `;
 export const RegularCommentFragmentDoc = gql`
     fragment RegularComment on UserComment {
   id
   content
-  hasVoted
   creator {
     id
     username
@@ -866,8 +887,6 @@ export const RegularCommentFragmentDoc = gql`
     id
   }
   points
-  createdAt
-  updatedAt
   isOwner
   voteStatus
 }
@@ -892,7 +911,6 @@ export const RegularPostFragmentDoc = gql`
   updatedAt
   joinStatus
   points
-  contentSnippet
   hasVoted
   isOwner
 }

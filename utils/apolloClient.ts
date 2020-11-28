@@ -6,7 +6,6 @@ import {
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { PaginatedPosts } from "~/generated/graphql";
-import _ from "lodash";
 
 export default function createApolloClient(initialState, ctx) {
     // The `ctx` (NextPageContext) will only be present on the server.
@@ -22,6 +21,7 @@ export default function createApolloClient(initialState, ctx) {
         if (networkError)
             console.log(`[Network error]: ${networkError}`);
     });
+
     const httpLink = new HttpLink({
         uri: `https://bookclub-server-1.herokuapp.com/graphql`,
         credentials: "include",

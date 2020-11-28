@@ -3,7 +3,7 @@ import { Box, Flex, Icon, Link, Text } from "@chakra-ui/core";
 import React, { Fragment } from "react";
 import gql from "graphql-tag";
 import {
-    RegularCommentFragment,
+    PostCommentFragment,
     useVoteCommentMutation,
     VoteCommentMutation,
 } from "~/generated/graphql";
@@ -11,7 +11,7 @@ import { checkAuthFromResponse } from "~/utils/checkAuthFromResponse";
 import { useRouter } from "next/router";
 
 interface CommentUpvoteProps {
-    comment: RegularCommentFragment;
+    comment: PostCommentFragment;
 }
 
 const updateCommentAfterVote = (

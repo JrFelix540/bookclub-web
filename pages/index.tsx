@@ -8,7 +8,6 @@ import Wrapper from "~/components/Wrapper";
 import { useMeQuery } from "~/generated/graphql";
 import SidebarsHome from "~/components/SidebarsHome";
 import { isServer } from "~/utils/isServer";
-import Footer from "~/components/Footer";
 
 const Home = () => {
     const { data, loading } = useMeQuery({
@@ -57,4 +56,4 @@ const Home = () => {
     );
 };
 
-export default withApollo({ ssr: true })(Home);
+export default withApollo({ ssr: false })(Home);
