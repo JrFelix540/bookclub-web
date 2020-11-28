@@ -1,17 +1,10 @@
 import { theme, DefaultTheme } from "@chakra-ui/core";
 
-const breakpointsSizes = [`576px`, `768px`, `992px`, `1200px`];
-// breakpoints.sm = breakpoints[0];
-// breakpoints.md = breakpoints[1];
-// breakpoints.lg = breakpoints[2];
-// breakpoints.xl = breakpoints[3];
-
-const breakpoints = {
-    sm: breakpointsSizes[0],
-    md: breakpointsSizes[1],
-    lg: breakpointsSizes[2],
-    xl: breakpointsSizes[3],
-};
+const breakpoints: any = [`576px`, `768px`, `992px`, `1200px`];
+breakpoints.sm = breakpoints[0];
+breakpoints.md = breakpoints[1];
+breakpoints.lg = breakpoints[2];
+breakpoints.xl = breakpoints[3];
 
 const customTheme: DefaultTheme = {
     ...theme,
