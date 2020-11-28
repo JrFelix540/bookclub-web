@@ -73,7 +73,7 @@ const ForgotPassword: React.FC = () => {
                                                 name="email"
                                                 label="Email"
                                                 placeholder="Enter email address to get reset link"
-                                                width={{
+                                                w={{
                                                     base: "250px",
                                                     md: "350px",
                                                 }}

@@ -111,7 +111,7 @@ const Register: React.FC = () => {
                                                 name="username"
                                                 label="Username"
                                                 placeholder="Username"
-                                                width={{
+                                                w={{
                                                     base: "250px",
                                                     md: "350px",
                                                 }}
@@ -122,7 +122,7 @@ const Register: React.FC = () => {
                                                 name="email"
                                                 label="Email"
                                                 placeholder="Email"
-                                                width={{
+                                                w={{
                                                     base: "250px",
                                                     md: "350px",
                                                 }}
@@ -135,7 +135,7 @@ const Register: React.FC = () => {
                                                 label="Password"
                                                 placeholder="Password"
                                                 type="password"
-                                                width={{
+                                                w={{
                                                     base: "250px",
                                                     md: "350px",
                                                 }}

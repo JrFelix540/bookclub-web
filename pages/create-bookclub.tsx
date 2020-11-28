@@ -87,7 +87,7 @@ const CreateCommunity: React.FC = () => {
                                                 name="name"
                                                 label="Name "
                                                 placeholder="Name of BookClub"
-                                                width={{
+                                                w={{
                                                     base: "300px",
                                                     md: "500px",
                                                 }}
@@ -98,7 +98,7 @@ const CreateCommunity: React.FC = () => {
                                                 name="description"
                                                 label="Description"
                                                 placeholder="A short description of the BookClub"
-                                                width={{
+                                                w={{
                                                     base: "300px",
                                                     md: "500px",
                                                 }}

@@ -114,11 +114,7 @@ const Login: React.FC = () => {
                                                 name="usernameOrEmail"
                                                 label="Username or Email"
                                                 placeholder="Username or Email"
-                                                // responsiveWidth={{
-                                                //     base: "250px",
-                                                //     md: "350px",
-                                                // }}
-                                                width={{
+                                                w={{
                                                     base: "250px",
                                                     md: "350px",
                                                 }}
@@ -130,7 +126,7 @@ const Login: React.FC = () => {
                                                 label="Password"
                                                 placeholder="Password"
                                                 type="password"
-                                                width={{
+                                                w={{
                                                     base: "250px",
                                                     md: "350px",
                                                 }}
