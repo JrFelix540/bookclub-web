@@ -23,7 +23,7 @@ export default function createApolloClient(initialState, ctx) {
     });
 
     const httpLink = new HttpLink({
-        uri: `https://bookclub-server-1.herokuapp.com/graphql`,
+        uri: process.env.NEXT_PUBLIC_API_URI,
         credentials: "include",
     });
     return new ApolloClient({
