@@ -27,7 +27,6 @@ mutation CreatePost(
                 id
                 name
             }
-            contentSnippet
             createdAt
             updatedAt
             joinStatus

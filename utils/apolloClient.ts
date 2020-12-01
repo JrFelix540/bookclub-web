@@ -5,6 +5,7 @@ import {
     from,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
+import { setContext } from "@apollo/client/link/context";
 import { PaginatedPosts } from "~/generated/graphql";
 
 export default function createApolloClient(initialState, ctx) {
@@ -26,15 +27,20 @@ export default function createApolloClient(initialState, ctx) {
         uri: process.env.NEXT_PUBLIC_API_URI,
         credentials: "include",
     });
+
+    const authLink = setContext((_, { headers }) => {
+        const token = localStorage.getItem("userToken");
+
+        return {
+            headers: {
+                ...headers,
+                authorization: token ? `Bearer ${token}` : "",
+            },
+        };
+    });
     return new ApolloClient({
         ssrMode: Boolean(ctx),
-        headers: {
-            cookie:
-                (typeof window === "undefined"
-                    ? ctx?.req?.headers.cookie
-                    : undefined) || "",
-        },
-        link: from([errorLink, httpLink]),
+        link: from([authLink, errorLink, httpLink]),
         cache: new InMemoryCache({
             typePolicies: {
                 Query: {

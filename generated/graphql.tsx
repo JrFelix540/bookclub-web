@@ -16,7 +16,6 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  hello: Scalars['String'];
   users: Array<User>;
   me?: Maybe<User>;
   meWithCommunities?: Maybe<User>;
@@ -112,7 +111,6 @@ export type Post = {
   voteStatus?: Maybe<Scalars['Int']>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  contentSnippet: Scalars['String'];
   isOwner: Scalars['Boolean'];
   joinStatus: Scalars['Boolean'];
   hasVoted?: Maybe<Scalars['Int']>;
@@ -224,9 +222,7 @@ export type Mutation = {
   createCommunity: CommunityResponse;
   joinCommunity: BooleanFieldResponse;
   leaveCommunity: BooleanFieldResponse;
-  deleteAllCommunities: Scalars['Boolean'];
   vote: UpvoteResponse;
-  deleteAllUpvote: Scalars['Boolean'];
   createPost: PostResponse;
   updatePost: PostResponse;
   deletePost: Scalars['Boolean'];
@@ -235,12 +231,15 @@ export type Mutation = {
 
 
 export type MutationRegisterArgs = {
-  userInput: UserRegisterInput;
+  password: Scalars['String'];
+  email: Scalars['String'];
+  username: Scalars['String'];
 };
 
 
 export type MutationLoginArgs = {
-  userInput: UserLoginInput;
+  password: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
 };
 
 
@@ -316,17 +315,7 @@ export type UserResponse = {
   __typename?: 'UserResponse';
   errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
-};
-
-export type UserRegisterInput = {
-  username: Scalars['String'];
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
-export type UserLoginInput = {
-  usernameOrEmail: Scalars['String'];
-  password: Scalars['String'];
+  token?: Maybe<Scalars['String']>;
 };
 
 export type CommentUpvoteResponse = {
@@ -482,7 +471,7 @@ export type CreatePostMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, post?: Maybe<(
       { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
+      & Pick<Post, 'id' | 'title' | 'content' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
       & { creator: (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'username'>
@@ -562,7 +551,8 @@ export type LeaveCommunityMutation = (
 );
 
 export type LoginMutationVariables = Exact<{
-  userInput: UserLoginInput;
+  usernameOrEmail: Scalars['String'];
+  password: Scalars['String'];
 }>;
 
 
@@ -570,7 +560,14 @@ export type LoginMutation = (
   { __typename?: 'Mutation' }
   & { login: (
     { __typename?: 'UserResponse' }
-    & RegularUserResponseFragment
+    & Pick<UserResponse, 'token'>
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'email' | 'createdAt' | 'updatedAt'>
+    )> }
   ) }
 );
 
@@ -583,7 +580,9 @@ export type LogoutMutation = (
 );
 
 export type RegisterUserMutationVariables = Exact<{
-  userInput: UserRegisterInput;
+  username: Scalars['String'];
+  password: Scalars['String'];
+  email: Scalars['String'];
 }>;
 
 
@@ -591,7 +590,14 @@ export type RegisterUserMutation = (
   { __typename?: 'Mutation' }
   & { register: (
     { __typename?: 'UserResponse' }
-    & RegularUserResponseFragment
+    & Pick<UserResponse, 'token'>
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'email' | 'createdAt' | 'updatedAt'>
+    )> }
   ) }
 );
 
@@ -692,7 +698,7 @@ export type CommunityPostsQuery = (
     & Pick<PaginatedPosts, 'hasMore'>
     & { posts?: Maybe<Array<(
       { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
+      & Pick<Post, 'id' | 'title' | 'content' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
       & { creator: (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'username'>
@@ -745,7 +751,7 @@ export type MyCommunitiesPostsQuery = (
     & Pick<PaginatedPosts, 'hasMore'>
     & { posts?: Maybe<Array<(
       { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
+      & Pick<Post, 'id' | 'title' | 'content' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
       & { creator: (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'username'>
@@ -816,7 +822,7 @@ export type PostsQuery = (
     & Pick<PaginatedPosts, 'hasMore'>
     & { posts?: Maybe<Array<(
       { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title' | 'content' | 'contentSnippet' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
+      & Pick<Post, 'id' | 'title' | 'content' | 'createdAt' | 'updatedAt' | 'joinStatus' | 'points' | 'isOwner' | 'hasVoted'>
       & { creator: (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'username'>
@@ -1051,7 +1057,6 @@ export const CreatePostDocument = gql`
         id
         name
       }
-      contentSnippet
       createdAt
       updatedAt
       joinStatus
@@ -1252,12 +1257,23 @@ export type LeaveCommunityMutationHookResult = ReturnType<typeof useLeaveCommuni
 export type LeaveCommunityMutationResult = ApolloReactCommon.MutationResult<LeaveCommunityMutation>;
 export type LeaveCommunityMutationOptions = ApolloReactCommon.BaseMutationOptions<LeaveCommunityMutation, LeaveCommunityMutationVariables>;
 export const LoginDocument = gql`
-    mutation Login($userInput: UserLoginInput!) {
-  login(userInput: $userInput) {
-    ...RegularUserResponse
+    mutation Login($usernameOrEmail: String!, $password: String!) {
+  login(usernameOrEmail: $usernameOrEmail, password: $password) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+      email
+      createdAt
+      updatedAt
+    }
+    token
   }
 }
-    ${RegularUserResponseFragmentDoc}`;
+    `;
 export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -1273,7 +1289,8 @@ export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, 
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      userInput: // value for 'userInput'
+ *      usernameOrEmail: // value for 'usernameOrEmail'
+ *      password: // value for 'password'
  *   },
  * });
  */
@@ -1313,12 +1330,23 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const RegisterUserDocument = gql`
-    mutation RegisterUser($userInput: UserRegisterInput!) {
-  register(userInput: $userInput) {
-    ...RegularUserResponse
+    mutation RegisterUser($username: String!, $password: String!, $email: String!) {
+  register(username: $username, password: $password, email: $email) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+      email
+      createdAt
+      updatedAt
+    }
+    token
   }
 }
-    ${RegularUserResponseFragmentDoc}`;
+    `;
 export type RegisterUserMutationFn = ApolloReactCommon.MutationFunction<RegisterUserMutation, RegisterUserMutationVariables>;
 
 /**
@@ -1334,7 +1362,9 @@ export type RegisterUserMutationFn = ApolloReactCommon.MutationFunction<Register
  * @example
  * const [registerUserMutation, { data, loading, error }] = useRegisterUserMutation({
  *   variables: {
- *      userInput: // value for 'userInput'
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *      email: // value for 'email'
  *   },
  * });
  */
@@ -1551,7 +1581,6 @@ export const CommunityPostsDocument = gql`
         id
         name
       }
-      contentSnippet
       createdAt
       updatedAt
       joinStatus
@@ -1676,7 +1705,6 @@ export const MyCommunitiesPostsDocument = gql`
         id
         name
       }
-      contentSnippet
       createdAt
       updatedAt
       joinStatus
@@ -1829,7 +1857,6 @@ export const PostsDocument = gql`
         id
         name
       }
-      contentSnippet
       createdAt
       updatedAt
       joinStatus

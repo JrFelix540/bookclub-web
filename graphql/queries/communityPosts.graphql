@@ -23,7 +23,6 @@ query CommunityPosts(
                 id
                 name
             }
-            contentSnippet
             createdAt
             updatedAt
             joinStatus

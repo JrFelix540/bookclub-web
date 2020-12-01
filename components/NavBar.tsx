@@ -115,6 +115,9 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                                     <ListItem mb={2}>
                                         <Link
                                             onClick={async () => {
+                                                localStorage.removeItem(
+                                                    "userToken",
+                                                );
                                                 await logout({
                                                     refetchQueries: [
                                                         {
@@ -133,29 +136,29 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                                                     update: (
                                                         cache,
                                                     ) => {
-                                                        cache.writeQuery<
-                                                            MeQuery
-                                                        >({
-                                                            query: MeDocument,
-                                                            data: {
-                                                                __typename:
-                                                                    "Query",
-                                                                me: null,
-                                                            },
-                                                        });
-                                                        cache.writeQuery<
-                                                            MyCommunitiesPostsQuery
-                                                        >({
-                                                            query: MyCommunitiesPostsDocument,
-                                                            data: {
-                                                                __typename:
-                                                                    "Query",
-                                                                myCommunitiesPosts: {
-                                                                    posts: [],
-                                                                    hasMore: false,
+                                                        cache.writeQuery<MeQuery>(
+                                                            {
+                                                                query: MeDocument,
+                                                                data: {
+                                                                    __typename:
+                                                                        "Query",
+                                                                    me: null,
                                                                 },
                                                             },
-                                                        });
+                                                        );
+                                                        cache.writeQuery<MyCommunitiesPostsQuery>(
+                                                            {
+                                                                query: MyCommunitiesPostsDocument,
+                                                                data: {
+                                                                    __typename:
+                                                                        "Query",
+                                                                    myCommunitiesPosts: {
+                                                                        posts: [],
+                                                                        hasMore: false,
+                                                                    },
+                                                                },
+                                                            },
+                                                        );
                                                     },
                                                 });
                                             }}

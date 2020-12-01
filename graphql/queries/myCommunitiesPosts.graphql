@@ -15,7 +15,6 @@ query MyCommunitiesPosts($limit: Int!, $cursor: String) {
                 id
                 name
             }
-            contentSnippet
             createdAt
             updatedAt
             joinStatus

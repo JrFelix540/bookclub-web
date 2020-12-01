@@ -59,7 +59,9 @@ const Login: React.FC = () => {
                                     setLoading(true);
                                     const response = await login({
                                         variables: {
-                                            userInput: values,
+                                            usernameOrEmail:
+                                                values.usernameOrEmail,
+                                            password: values.password,
                                         },
                                         update: (cache, { data }) => {
                                             cache.writeQuery<MeQuery>(
@@ -101,7 +103,12 @@ const Login: React.FC = () => {
                                         );
                                         setLoading(false);
                                     }
-
+                                    const userToken =
+                                        response.data.login.token;
+                                    localStorage.setItem(
+                                        "userToken",
+                                        userToken,
+                                    );
                                     if (response.data.login.user) {
                                         router.push("/");
                                     }

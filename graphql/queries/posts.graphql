@@ -15,7 +15,6 @@ query Posts($limit: Int!, $cursor: String) {
                 id
                 name
             }
-            contentSnippet
             createdAt
             updatedAt
             joinStatus
