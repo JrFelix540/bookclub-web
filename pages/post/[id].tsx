@@ -8,6 +8,7 @@ import NavBar from "~/components/NavBar";
 import SidebarsPost from "~/components/SIdebarsPost";
 import Wrapper from "~/components/Wrapper";
 import { useMeQuery, usePostQuery } from "~/generated/graphql";
+import { isServer } from "~/utils/isServer";
 import { useGetIntId } from "~/utils/useGetIntId";
 import { withApollo } from "~/utils/withApollo";
 
@@ -22,7 +23,9 @@ const PostPage: React.FC = () => {
         },
     });
 
-    const { data: meData, loading: meLoading } = useMeQuery();
+    const { data: meData, loading: meLoading } = useMeQuery({
+        skip: isServer(),
+    });
 
     if (meLoading) {
         return <p>Loading user...</p>;
@@ -74,4 +77,4 @@ const PostPage: React.FC = () => {
     );
 };
 
-export default withApollo()(PostPage);
+export default withApollo({ ssr: true })(PostPage);
