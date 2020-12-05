@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, Text } from "@chakra-ui/core";
+import { Box, Button, Flex, Text } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
@@ -7,17 +7,17 @@ import Card from "~/components/Card";
 import InputTextField from "~/components/InputTextField";
 import NavBar from "~/components/NavBar";
 import SelectInput from "~/components/SelectInput";
+import TextAreaField from "~/components/TextAreaField";
 import Wrapper from "~/components/Wrapper";
 import {
+    MyCommunitiesPostsDocument,
     PostsDocument,
-    PostsQuery,
     useCreatePostMutation,
     useMeQuery,
     useMeWithCommunitiesQuery,
 } from "~/generated/graphql";
-import { withApollo } from "~/utils/withApollo";
-import TextAreaField from "~/components/TextAreaField";
 import { formatErrorMessage } from "~/utils/formatError";
+import { withApollo } from "~/utils/withApollo";
 
 const CreatePost: React.FC = () => {
     const router = useRouter();
@@ -82,6 +82,12 @@ const CreatePost: React.FC = () => {
                                                 refetchQueries: [
                                                     {
                                                         query: PostsDocument,
+                                                        variables: {
+                                                            limit: 10,
+                                                        },
+                                                    },
+                                                    {
+                                                        query: MyCommunitiesPostsDocument,
                                                         variables: {
                                                             limit: 10,
                                                         },

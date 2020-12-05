@@ -1,10 +1,9 @@
-import { Box, Button, Flex, Grid, Text } from "@chakra-ui/core";
-import { Form, Formik, replace } from "formik";
+import { Box, Button, Flex, Text } from "@chakra-ui/core";
+import { Form, Formik } from "formik";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import Card from "~/components/Card";
-import Footer from "~/components/Footer";
 import InputTextField from "~/components/InputTextField";
 import NavBar from "~/components/NavBar";
 import TextAreaField from "~/components/TextAreaField";
