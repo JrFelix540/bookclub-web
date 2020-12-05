@@ -165,7 +165,7 @@ const Posts: React.FC<PostsProps> = ({ me }) => {
                                             data.posts.posts[
                                                 data.posts.posts
                                                     .length - 1
-                                            ].createdAt,
+                                            ].updatedAt,
                                     },
                                 });
                             }}

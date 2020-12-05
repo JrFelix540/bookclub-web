@@ -7,6 +7,7 @@ import {
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
 import { PaginatedPosts } from "~/generated/graphql";
+import _ from "lodash";
 
 export default function createApolloClient(initialState, ctx) {
     // The `ctx` (NextPageContext) will only be present on the server.
@@ -51,12 +52,21 @@ export default function createApolloClient(initialState, ctx) {
                                 existing: PaginatedPosts | undefined,
                                 incoming: PaginatedPosts,
                             ): PaginatedPosts {
-                                return {
+                                const combinedPosts = {
                                     ...incoming,
                                     posts: [
                                         ...(existing?.posts || []),
                                         ...incoming.posts,
                                     ],
+                                };
+                                const uniquePosts = _.uniqBy(
+                                    combinedPosts.posts,
+                                    "__ref",
+                                );
+
+                                return {
+                                    ...incoming,
+                                    posts: uniquePosts,
                                 };
                             },
                         },
@@ -66,12 +76,21 @@ export default function createApolloClient(initialState, ctx) {
                                 existing: PaginatedPosts | undefined,
                                 incoming: PaginatedPosts,
                             ): PaginatedPosts {
-                                return {
+                                const combinedPosts = {
                                     ...incoming,
                                     posts: [
                                         ...(existing?.posts || []),
                                         ...incoming.posts,
                                     ],
+                                };
+                                const uniquePosts = _.uniqBy(
+                                    combinedPosts.posts,
+                                    "__ref",
+                                );
+
+                                return {
+                                    ...incoming,
+                                    posts: uniquePosts,
                                 };
                             },
                         },
@@ -81,12 +100,21 @@ export default function createApolloClient(initialState, ctx) {
                                 existing: PaginatedPosts | undefined,
                                 incoming: PaginatedPosts,
                             ): PaginatedPosts {
-                                return {
+                                const combinedPosts = {
                                     ...incoming,
                                     posts: [
                                         ...(existing?.posts || []),
                                         ...incoming.posts,
                                     ],
+                                };
+                                const uniquePosts = _.uniqBy(
+                                    combinedPosts.posts,
+                                    "__ref",
+                                );
+
+                                return {
+                                    ...incoming,
+                                    posts: uniquePosts,
                                 };
                             },
                         },
