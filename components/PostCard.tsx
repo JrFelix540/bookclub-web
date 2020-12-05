@@ -137,7 +137,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                         base: "250px",
                                         sm: "500px",
                                         md: "700px",
-                                        lg: "900px",
+                                        lg: "650px",
                                     }}
                                 >
                                     {post.content}

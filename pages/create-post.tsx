@@ -2,7 +2,7 @@ import { Box, Button, Flex, Grid, Text } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import Card from "~/components/Card";
 import InputTextField from "~/components/InputTextField";
 import NavBar from "~/components/NavBar";
@@ -18,8 +18,6 @@ import {
 import { withApollo } from "~/utils/withApollo";
 import TextAreaField from "~/components/TextAreaField";
 import { formatErrorMessage } from "~/utils/formatError";
-import { userIsAuth } from "~/utils/userIsAuth";
-import Footer from "~/components/Footer";
 
 const CreatePost: React.FC = () => {
     const router = useRouter();
@@ -135,6 +133,7 @@ const CreatePost: React.FC = () => {
                                                     label="Content"
                                                     placeholder="What are your thoughts?"
                                                     width="100%"
+                                                    height="250px"
                                                 />
                                             </Box>
                                             <Flex justifyContent="flex-end">

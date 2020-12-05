@@ -75,9 +75,7 @@ const CreateCommunity: React.FC = () => {
                                         );
                                     }
 
-                                    router.push(
-                                        `/bookclub/${response.data.createCommunity.community.id}`,
-                                    );
+                                    router.push(`/`);
                                 }}
                             >
                                 {({ isSubmitting }) => (
