@@ -101,9 +101,11 @@ const Register: React.FC = () => {
                                         setLoading(false);
                                     }
 
-                                    console.log(
-                                        `JWT Auth`,
-                                        response.data.register.token,
+                                    const userToken =
+                                        response.data.register.token;
+                                    localStorage.setItem(
+                                        "userToken",
+                                        userToken,
                                     );
 
                                     if (response.data.register.user) {
