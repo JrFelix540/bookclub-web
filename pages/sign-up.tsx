@@ -101,6 +101,11 @@ const Register: React.FC = () => {
                                         setLoading(false);
                                     }
 
+                                    console.log(
+                                        `JWT Auth`,
+                                        response.data.register.token,
+                                    );
+
                                     if (response.data.register.user) {
                                         router.push("/");
                                     }
