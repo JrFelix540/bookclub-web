@@ -60,7 +60,9 @@ const Register: React.FC = () => {
                                     setLoading(true);
                                     const response = await register({
                                         variables: {
-                                            userInput: values,
+                                            email: values.email,
+                                            password: values.password,
+                                            username: values.username,
                                         },
                                         refetchQueries: [
                                             {
