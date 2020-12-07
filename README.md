@@ -1,5 +1,7 @@
 # Bookclub Frontend - Built with React(Typescript), Apollo Client, GraphQL, NextJs
 
+![Home page screenshot](/public/screenshot-home.png)
+
 ## Description
 
 -   A community/discussion-first approach to discussing books, inspired by [Reddit](http://reddit.com/) and [goodreads](https://www.goodreads.com/)
