@@ -41,12 +41,13 @@ const Home = () => {
                     </Flex>
                     <Flex
                         display={{
-                            base: "none",
-                            sm: "none",
+                            base: "flex",
+                            sm: "flex",
                             md: "flex",
                             lg: "flex",
                             xl: "flex",
                         }}
+                        marginBottom={4}
                     >
                         <SidebarsHome me={data.me} />
                     </Flex>
