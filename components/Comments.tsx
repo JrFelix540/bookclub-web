@@ -33,7 +33,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
                     <CommentUpvote comment={comment} />
                     <Flex direction="column" w="100%">
                         <Text fontSize="xs" mb={2}>
-                            Posted by {comment.creator.username}
+                            Posted by u/{comment.creator.username}
                         </Text>
                         <Text>{comment.content}</Text>
                         {comment.isOwner && (

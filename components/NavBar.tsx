@@ -146,19 +146,19 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                                                                 },
                                                             },
                                                         );
-                                                        cache.writeQuery<MyCommunitiesPostsQuery>(
-                                                            {
-                                                                query: MyCommunitiesPostsDocument,
-                                                                data: {
-                                                                    __typename:
-                                                                        "Query",
-                                                                    myCommunitiesPosts: {
-                                                                        posts: [],
-                                                                        hasMore: false,
-                                                                    },
-                                                                },
-                                                            },
-                                                        );
+                                                        // cache.writeQuery<MyCommunitiesPostsQuery>(
+                                                        //     {
+                                                        //         query: MyCommunitiesPostsDocument,
+                                                        //         data: {
+                                                        //             __typename:
+                                                        //                 "Query",
+                                                        //             myCommunitiesPosts: {
+                                                        //                 posts: [],
+                                                        //                 hasMore: false,
+                                                        //             },
+                                                        //         },
+                                                        //     },
+                                                        // );
                                                     },
                                                 });
                                             }}

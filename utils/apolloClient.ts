@@ -100,6 +100,12 @@ export default function createApolloClient(initialState, ctx) {
                                 existing: PaginatedPosts | undefined,
                                 incoming: PaginatedPosts,
                             ): PaginatedPosts {
+                                if (incoming?.posts.length === 0) {
+                                    return {
+                                        ...incoming,
+                                        posts: [],
+                                    };
+                                }
                                 const combinedPosts = {
                                     ...incoming,
                                     posts: [

@@ -85,12 +85,12 @@ const Login: React.FC = () => {
                                                     limit: 10,
                                                 },
                                             },
-                                            {
-                                                query: MyCommunitiesPostsDocument,
-                                                variables: {
-                                                    limit: 10,
-                                                },
-                                            },
+                                            // {
+                                            //     query: MyCommunitiesPostsDocument,
+                                            //     variables: {
+                                            //         limit: 10,
+                                            //     },
+                                            // },
                                         ],
                                     });
 

@@ -28,6 +28,7 @@ const Posts: React.FC<PostsProps> = ({ me }) => {
         variables: {
             limit: 10,
         },
+        fetchPolicy: "cache-and-network",
     });
 
     if (loading || myPostsLoading) {
@@ -121,7 +122,9 @@ const Posts: React.FC<PostsProps> = ({ me }) => {
                                 <Box textAlign="center">
                                     <Button
                                         display={
-                                            data.posts.hasMore
+                                            myCommunitiesPosts
+                                                .myCommunitiesPosts
+                                                .hasMore
                                                 ? "flex"
                                                 : "none"
                                         }
@@ -138,7 +141,7 @@ const Posts: React.FC<PostsProps> = ({ me }) => {
                                                                 .posts
                                                                 .length -
                                                                 1
-                                                        ].createdAt,
+                                                        ].updatedAt,
                                                 },
                                             });
                                         }}

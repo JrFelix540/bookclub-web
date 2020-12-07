@@ -42,7 +42,7 @@ const FullPostCard: React.FC<FullPostCardProps> = ({ post, me }) => {
                                     ml={4}
                                 >
                                     <Text fontSize="sm">
-                                        Posted in c/
+                                        Posted in b/
                                         {post.community.name} by u/
                                         {post.creator.username}
                                     </Text>
