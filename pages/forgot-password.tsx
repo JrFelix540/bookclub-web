@@ -13,11 +13,10 @@ import Card from "~/components/Card";
 import InputTextField from "~/components/InputTextField";
 import Logo from "~/components/Logo";
 import Wrapper from "~/components/Wrapper";
-import { useForgorPasswordMutation } from "~/generated/graphql";
 import { withApollo } from "~/utils/withApollo";
 
 const ForgotPassword: React.FC = () => {
-    const [forgotPassword, {}] = useForgorPasswordMutation();
+    // const [forgotPassword, {}] = useForgorPasswordMutation();
     const [showAlert, setShowAlert] = useState<boolean>(false);
     return (
         <Fragment>
@@ -57,11 +56,11 @@ const ForgotPassword: React.FC = () => {
                             <Formik
                                 initialValues={{ email: "" }}
                                 onSubmit={async (values) => {
-                                    await forgotPassword({
-                                        variables: {
-                                            email: values.email,
-                                        },
-                                    });
+                                    // await forgotPassword({
+                                    //     variables: {
+                                    //         email: values.email,
+                                    //     },
+                                    // });
 
                                     setShowAlert(true);
                                 }}
