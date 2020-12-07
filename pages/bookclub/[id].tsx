@@ -240,17 +240,17 @@ export async function getStaticProps(context) {
 export async function getStaticPaths(context) {
     const postsWithIds = `
      query {
-        postWithIds{
+        communitiesWithIds{
             id
         }
-     }
+      }
     `;
 
     const response = await request(
         process.env.NEXT_PUBLIC_API_URI,
         postsWithIds,
     );
-    const paths = response.postWithIds.map((post) => ({
+    const paths = response.communitiesWithIds.map((post) => ({
         params: { id: `${post.id}` },
     }));
     return { paths, fallback: false };

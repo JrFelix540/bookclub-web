@@ -2,7 +2,6 @@ import { Flex, Grid } from "@chakra-ui/core";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { Fragment } from "react";
-import Footer from "~/components/Footer";
 import FullPostCard from "~/components/FullPostCard";
 import NavBar from "~/components/NavBar";
 import SidebarsPost from "~/components/SIdebarsPost";
@@ -11,6 +10,7 @@ import { useMeQuery, usePostQuery } from "~/generated/graphql";
 import { isServer } from "~/utils/isServer";
 import { useGetIntId } from "~/utils/useGetIntId";
 import { withApollo } from "~/utils/withApollo";
+import { request } from "graphql-request";
 
 const PostPage: React.FC = () => {
     const router = useRouter();
@@ -77,4 +77,32 @@ const PostPage: React.FC = () => {
     );
 };
 
-export default withApollo({ ssr: true })(PostPage);
+export async function getStaticProps(context) {
+    const id = context.params.id;
+    return {
+        props: {
+            communityId: parseFloat(id),
+        },
+    };
+}
+
+export async function getStaticPaths(context) {
+    const postsWithIds = `
+     query {
+        postWithIds{
+            id
+        }
+     }
+    `;
+
+    const response = await request(
+        process.env.NEXT_PUBLIC_API_URI,
+        postsWithIds,
+    );
+    const paths = response.postWithIds.map((post) => ({
+        params: { id: `${post.id}` },
+    }));
+    return { paths, fallback: false };
+}
+
+export default withApollo({ ssr: false })(PostPage);
