@@ -253,7 +253,7 @@ export async function getStaticPaths(context) {
     const paths = response.postWithIds.map((post) => ({
         params: { id: `${post.id}` },
     }));
-    return { paths, fallback: true };
+    return { paths, fallback: false };
 }
 
 export default withApollo({ ssr: false })(BookClubPage);
