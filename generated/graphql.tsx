@@ -26,6 +26,7 @@ export type Query = {
   myCommunitiesPosts: PaginatedPosts;
   communityPosts?: Maybe<PaginatedPosts>;
   post: Post;
+  postWithIds: Array<Post>;
 };
 
 
@@ -212,9 +213,6 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
-  forgotPassword: Scalars['Boolean'];
-  resetPassword: UserResponse;
-  deleteUsers: Scalars['Boolean'];
   voteComment: CommentUpvoteResponse;
   createComment: UserCommentResponse;
   deleteAllComments: Scalars['Boolean'];
@@ -240,17 +238,6 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
-};
-
-
-export type MutationForgotPasswordArgs = {
-  email: Scalars['String'];
-};
-
-
-export type MutationResetPasswordArgs = {
-  password: Scalars['String'];
-  token: Scalars['String'];
 };
 
 
@@ -506,16 +493,6 @@ export type DeletePostMutation = (
   & Pick<Mutation, 'deletePost'>
 );
 
-export type ForgorPasswordMutationVariables = Exact<{
-  email: Scalars['String'];
-}>;
-
-
-export type ForgorPasswordMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'forgotPassword'>
-);
-
 export type JoinCommunityMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -598,20 +575,6 @@ export type RegisterUserMutation = (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'email' | 'createdAt' | 'updatedAt'>
     )> }
-  ) }
-);
-
-export type ResetPasswordMutationVariables = Exact<{
-  token: Scalars['String'];
-  password: Scalars['String'];
-}>;
-
-
-export type ResetPasswordMutation = (
-  { __typename?: 'Mutation' }
-  & { resetPassword: (
-    { __typename?: 'UserResponse' }
-    & RegularUserResponseFragment
   ) }
 );
 
@@ -835,6 +798,17 @@ export type PostsQuery = (
       ) }
     )>> }
   ) }
+);
+
+export type PostWithIdsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostWithIdsQuery = (
+  { __typename?: 'Query' }
+  & { postWithIds: Array<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id'>
+  )> }
 );
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1154,36 +1128,6 @@ export function useDeletePostMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type DeletePostMutationHookResult = ReturnType<typeof useDeletePostMutation>;
 export type DeletePostMutationResult = ApolloReactCommon.MutationResult<DeletePostMutation>;
 export type DeletePostMutationOptions = ApolloReactCommon.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
-export const ForgorPasswordDocument = gql`
-    mutation ForgorPassword($email: String!) {
-  forgotPassword(email: $email)
-}
-    `;
-export type ForgorPasswordMutationFn = ApolloReactCommon.MutationFunction<ForgorPasswordMutation, ForgorPasswordMutationVariables>;
-
-/**
- * __useForgorPasswordMutation__
- *
- * To run a mutation, you first call `useForgorPasswordMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useForgorPasswordMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [forgorPasswordMutation, { data, loading, error }] = useForgorPasswordMutation({
- *   variables: {
- *      email: // value for 'email'
- *   },
- * });
- */
-export function useForgorPasswordMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ForgorPasswordMutation, ForgorPasswordMutationVariables>) {
-        return ApolloReactHooks.useMutation<ForgorPasswordMutation, ForgorPasswordMutationVariables>(ForgorPasswordDocument, baseOptions);
-      }
-export type ForgorPasswordMutationHookResult = ReturnType<typeof useForgorPasswordMutation>;
-export type ForgorPasswordMutationResult = ApolloReactCommon.MutationResult<ForgorPasswordMutation>;
-export type ForgorPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<ForgorPasswordMutation, ForgorPasswordMutationVariables>;
 export const JoinCommunityDocument = gql`
     mutation JoinCommunity($id: Int!) {
   joinCommunity(id: $id) {
@@ -1374,39 +1318,6 @@ export function useRegisterUserMutation(baseOptions?: ApolloReactHooks.MutationH
 export type RegisterUserMutationHookResult = ReturnType<typeof useRegisterUserMutation>;
 export type RegisterUserMutationResult = ApolloReactCommon.MutationResult<RegisterUserMutation>;
 export type RegisterUserMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
-export const ResetPasswordDocument = gql`
-    mutation ResetPassword($token: String!, $password: String!) {
-  resetPassword(token: $token, password: $password) {
-    ...RegularUserResponse
-  }
-}
-    ${RegularUserResponseFragmentDoc}`;
-export type ResetPasswordMutationFn = ApolloReactCommon.MutationFunction<ResetPasswordMutation, ResetPasswordMutationVariables>;
-
-/**
- * __useResetPasswordMutation__
- *
- * To run a mutation, you first call `useResetPasswordMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useResetPasswordMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [resetPasswordMutation, { data, loading, error }] = useResetPasswordMutation({
- *   variables: {
- *      token: // value for 'token'
- *      password: // value for 'password'
- *   },
- * });
- */
-export function useResetPasswordMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ResetPasswordMutation, ResetPasswordMutationVariables>) {
-        return ApolloReactHooks.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument, baseOptions);
-      }
-export type ResetPasswordMutationHookResult = ReturnType<typeof useResetPasswordMutation>;
-export type ResetPasswordMutationResult = ApolloReactCommon.MutationResult<ResetPasswordMutation>;
-export type ResetPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<ResetPasswordMutation, ResetPasswordMutationVariables>;
 export const UpdatePostDocument = gql`
     mutation UpdatePost($id: Float!, $title: String!, $content: String!) {
   updatePost(id: $id, title: $title, content: $content) {
@@ -1895,6 +1806,38 @@ export function usePostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type PostsQueryHookResult = ReturnType<typeof usePostsQuery>;
 export type PostsLazyQueryHookResult = ReturnType<typeof usePostsLazyQuery>;
 export type PostsQueryResult = ApolloReactCommon.QueryResult<PostsQuery, PostsQueryVariables>;
+export const PostWithIdsDocument = gql`
+    query PostWithIds {
+  postWithIds {
+    id
+  }
+}
+    `;
+
+/**
+ * __usePostWithIdsQuery__
+ *
+ * To run a query within a React component, call `usePostWithIdsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostWithIdsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostWithIdsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePostWithIdsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PostWithIdsQuery, PostWithIdsQueryVariables>) {
+        return ApolloReactHooks.useQuery<PostWithIdsQuery, PostWithIdsQueryVariables>(PostWithIdsDocument, baseOptions);
+      }
+export function usePostWithIdsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PostWithIdsQuery, PostWithIdsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<PostWithIdsQuery, PostWithIdsQueryVariables>(PostWithIdsDocument, baseOptions);
+        }
+export type PostWithIdsQueryHookResult = ReturnType<typeof usePostWithIdsQuery>;
+export type PostWithIdsLazyQueryHookResult = ReturnType<typeof usePostWithIdsLazyQuery>;
+export type PostWithIdsQueryResult = ApolloReactCommon.QueryResult<PostWithIdsQuery, PostWithIdsQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {
