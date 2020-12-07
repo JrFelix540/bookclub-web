@@ -25,10 +25,8 @@ import {
     useLeaveCommunityMutation,
     useMeQuery,
 } from "~/generated/graphql";
-import createApolloClient from "~/utils/apolloClient";
 import { checkAuthFromResponse } from "~/utils/checkAuthFromResponse";
 import { findInArray } from "~/utils/findInArray";
-import { ALL_POSTS } from "~/utils/postsQuery";
 import { useGetIntId } from "~/utils/useGetIntId";
 import { withApollo } from "~/utils/withApollo";
 
