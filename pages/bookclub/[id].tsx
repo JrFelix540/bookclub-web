@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/core";
 import Head from "next/head";
 import { Router, useRouter } from "next/router";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Card from "~/components/Card";
 import CommunityPosts from "~/components/CommunityPosts";
 import NavBar from "~/components/NavBar";
@@ -34,6 +34,7 @@ const BookClubPage: React.FC = () => {
     const [leaveCommunity, {}] = useLeaveCommunityMutation();
     const router = useRouter();
     const intId = useGetIntId();
+    const [btnLoading, setBtnLoading] = useState<boolean>(false);
     const { data, loading } = useCommunityQuery({
         skip: intId === -1,
         variables: {
@@ -76,7 +77,9 @@ const BookClubPage: React.FC = () => {
                                 meData.me?.id,
                             ) ? (
                                 <Button
+                                    isLoading={btnLoading}
                                     onClick={async () => {
+                                        setBtnLoading(true);
                                         const response = await leaveCommunity(
                                             {
                                                 variables: {
@@ -107,6 +110,7 @@ const BookClubPage: React.FC = () => {
                                                 ],
                                             },
                                         );
+                                        setBtnLoading(false);
                                     }}
                                 >
                                     Leave
@@ -114,7 +118,9 @@ const BookClubPage: React.FC = () => {
                             ) : (
                                 <Box>
                                     <Button
+                                        isLoading={btnLoading}
                                         onClick={async () => {
+                                            setBtnLoading(true);
                                             const response = await joinCommunity(
                                                 {
                                                     variables: {
@@ -161,6 +167,7 @@ const BookClubPage: React.FC = () => {
                                                         `/sign-in`,
                                                     );
                                             }
+                                            setBtnLoading(false);
                                         }}
                                         variant="solid"
                                     >
@@ -204,6 +211,7 @@ const BookClubPage: React.FC = () => {
                             base: "none",
                             lg: "flex",
                         }}
+                        height="fit-content"
                     >
                         <SidebarsCommunityPage
                             me={meData.me}

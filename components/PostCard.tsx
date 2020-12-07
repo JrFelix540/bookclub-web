@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Icon, Link, Text } from "@chakra-ui/core";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import {
+    CommunityDocument,
     MyCommunitiesPostsDocument,
     PostsDocument,
     RegularPostFragment,
@@ -20,6 +21,7 @@ interface PostCardProps {
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
     const [joinCommunity, {}] = useJoinCommunityMutation();
     const router = useRouter();
+    const [loading, setLoading] = useState<boolean>(false);
     return (
         <Fragment>
             <Card width="100%" mb={4}>
@@ -44,7 +46,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                     }}
                                 >
                                     <Text fontSize="sm" mr={1}>
-                                        Posted in c/
+                                        Posted in b/
                                         <NextLink
                                             href="/bookclub/[id]"
                                             as={`/bookclub/${post.community.id}`}
@@ -67,7 +69,9 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                     />
                                 ) : (
                                     <Button
+                                        isLoading={loading}
                                         onClick={async () => {
+                                            setLoading(true);
                                             const response = await joinCommunity(
                                                 {
                                                     variables: {
@@ -77,6 +81,16 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                                                 .id,
                                                     },
                                                     refetchQueries: [
+                                                        {
+                                                            query: CommunityDocument,
+                                                            variables: {
+                                                                id:
+                                                                    post
+                                                                        .community
+                                                                        .id,
+                                                            },
+                                                        },
+
                                                         {
                                                             query: PostsDocument,
                                                             variables: {
@@ -110,6 +124,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                                     );
                                                 }
                                             }
+                                            setLoading(false);
                                         }}
                                     >
                                         Join

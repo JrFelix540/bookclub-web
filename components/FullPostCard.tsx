@@ -1,6 +1,9 @@
 import { Box, Flex, Icon, Button, Link, Text } from "@chakra-ui/core";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import {
+    CommunityDocument,
+    CommunityPostsDocument,
+    PostsDocument,
     RegularPostFragment,
     RegularUserFragment,
     useJoinCommunityMutation,
@@ -22,6 +25,7 @@ interface FullPostCardProps {
 const FullPostCard: React.FC<FullPostCardProps> = ({ post, me }) => {
     const router = useRouter();
     const [joinCommunity, {}] = useJoinCommunityMutation();
+    const [loading, setLoading] = useState<boolean>(false);
 
     return (
         <Fragment>
@@ -41,11 +45,31 @@ const FullPostCard: React.FC<FullPostCardProps> = ({ post, me }) => {
                                     alignItems="center"
                                     ml={4}
                                 >
-                                    <Text fontSize="sm">
-                                        Posted in b/
-                                        {post.community.name} by u/
-                                        {post.creator.username}
-                                    </Text>
+                                    <Flex
+                                        direction={{
+                                            base: "column",
+                                            md: "row",
+                                        }}
+                                    >
+                                        <Text fontSize="sm" mr={1}>
+                                            Posted in b/
+                                            <NextLink
+                                                href="/bookclub/[id]"
+                                                as={`/bookclub/${post.community.id}`}
+                                            >
+                                                <Link>
+                                                    {
+                                                        post.community
+                                                            .name
+                                                    }
+                                                </Link>
+                                            </NextLink>{" "}
+                                        </Text>
+                                        <Text fontSize="sm">
+                                            by u/
+                                            {post.creator.username}
+                                        </Text>
+                                    </Flex>
                                     {post.joinStatus ? (
                                         <Icon
                                             name="check-circle"
@@ -54,7 +78,9 @@ const FullPostCard: React.FC<FullPostCardProps> = ({ post, me }) => {
                                         />
                                     ) : (
                                         <Button
+                                            isLoading={loading}
                                             onClick={async () => {
+                                                setLoading(true);
                                                 const response = await joinCommunity(
                                                     {
                                                         variables: {
@@ -63,6 +89,33 @@ const FullPostCard: React.FC<FullPostCardProps> = ({ post, me }) => {
                                                                     .community
                                                                     .id,
                                                         },
+                                                        refetchQueries: [
+                                                            {
+                                                                query: PostsDocument,
+                                                                variables: {
+                                                                    limit: 10,
+                                                                },
+                                                            },
+                                                            {
+                                                                query: CommunityDocument,
+                                                                variables: {
+                                                                    id:
+                                                                        post
+                                                                            .community
+                                                                            .id,
+                                                                },
+                                                            },
+                                                            {
+                                                                query: CommunityPostsDocument,
+                                                                variables: {
+                                                                    communityId:
+                                                                        post
+                                                                            .community
+                                                                            .id,
+                                                                    limit: 10,
+                                                                },
+                                                            },
+                                                        ],
                                                     },
                                                 );
 
@@ -84,6 +137,7 @@ const FullPostCard: React.FC<FullPostCardProps> = ({ post, me }) => {
                                                         );
                                                     }
                                                 }
+                                                setLoading(false);
                                             }}
                                         >
                                             Join
