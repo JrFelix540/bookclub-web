@@ -16,6 +16,7 @@ import {
     usePostQuery,
     useUpdatePostMutation,
 } from "../../../generated/graphql";
+import { request } from "graphql-request";
 const EditPostPage: React.FC = () => {
     const router = useRouter();
     const intId = useGetIntId();
@@ -168,5 +169,31 @@ const EditPostPage: React.FC = () => {
         </Fragment>
     );
 };
+export async function getStaticProps(context) {
+    const id = context.params.id;
+    return {
+        props: {
+            communityId: parseFloat(id),
+        },
+    };
+}
 
+export async function getStaticPaths(context) {
+    const postsWithIds = `
+     query {
+        postWithIds{
+            id
+        }
+     }
+    `;
+
+    const response = await request(
+        process.env.NEXT_PUBLIC_API_URI,
+        postsWithIds,
+    );
+    const paths = response.postWithIds.map((post) => ({
+        params: { id: `${post.id}` },
+    }));
+    return { paths, fallback: false };
+}
 export default withApollo()(EditPostPage);

@@ -81,7 +81,7 @@ export async function getStaticProps(context) {
     const id = context.params.id;
     return {
         props: {
-            communityId: parseFloat(id),
+            postId: parseFloat(id),
         },
     };
 }
