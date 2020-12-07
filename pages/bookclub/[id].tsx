@@ -7,34 +7,43 @@ import {
     Text,
 } from "@chakra-ui/core";
 import Head from "next/head";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import React, { Fragment, useState } from "react";
+import { request } from "graphql-request";
 import Card from "~/components/Card";
 import CommunityPosts from "~/components/CommunityPosts";
 import NavBar from "~/components/NavBar";
 import SidebarsCommunityPage from "~/components/SidebarsCommunityPage";
 import Wrapper from "~/components/Wrapper";
 import {
+    Community,
     CommunityDocument,
     CommunityPostsDocument,
-    PostDocument,
     PostsDocument,
     useCommunityQuery,
     useJoinCommunityMutation,
     useLeaveCommunityMutation,
     useMeQuery,
 } from "~/generated/graphql";
+import createApolloClient from "~/utils/apolloClient";
 import { checkAuthFromResponse } from "~/utils/checkAuthFromResponse";
 import { findInArray } from "~/utils/findInArray";
+import { ALL_POSTS } from "~/utils/postsQuery";
 import { useGetIntId } from "~/utils/useGetIntId";
 import { withApollo } from "~/utils/withApollo";
 
-const BookClubPage: React.FC = () => {
+interface BookClubPageProps {
+    communityId: number;
+}
+
+const BookClubPage: React.FC<BookClubPageProps> = ({
+    communityId,
+}) => {
     const [joinCommunity, {}] = useJoinCommunityMutation();
     const [leaveCommunity, {}] = useLeaveCommunityMutation();
     const router = useRouter();
-    const intId = useGetIntId();
     const [btnLoading, setBtnLoading] = useState<boolean>(false);
+    const intId = useGetIntId();
     const { data, loading } = useCommunityQuery({
         skip: intId === -1,
         variables: {
@@ -80,36 +89,33 @@ const BookClubPage: React.FC = () => {
                                     isLoading={btnLoading}
                                     onClick={async () => {
                                         setBtnLoading(true);
-                                        const response = await leaveCommunity(
-                                            {
-                                                variables: {
-                                                    communityId:
-                                                        data.community
-                                                            .id,
-                                                },
-                                                refetchQueries: [
-                                                    {
-                                                        query: PostsDocument,
-                                                        variables: {
-                                                            limit: 10,
-                                                        },
-                                                    },
-                                                    {
-                                                        query: CommunityDocument,
-                                                        variables: {
-                                                            id: intId,
-                                                        },
-                                                    },
-                                                    {
-                                                        query: CommunityPostsDocument,
-                                                        variables: {
-                                                            communityId: intId,
-                                                            limit: 10,
-                                                        },
-                                                    },
-                                                ],
+                                        await leaveCommunity({
+                                            variables: {
+                                                communityId:
+                                                    data.community.id,
                                             },
-                                        );
+                                            refetchQueries: [
+                                                {
+                                                    query: PostsDocument,
+                                                    variables: {
+                                                        limit: 10,
+                                                    },
+                                                },
+                                                {
+                                                    query: CommunityDocument,
+                                                    variables: {
+                                                        id: intId,
+                                                    },
+                                                },
+                                                {
+                                                    query: CommunityPostsDocument,
+                                                    variables: {
+                                                        communityId: intId,
+                                                        limit: 10,
+                                                    },
+                                                },
+                                            ],
+                                        });
                                         setBtnLoading(false);
                                     }}
                                 >
@@ -224,4 +230,32 @@ const BookClubPage: React.FC = () => {
     );
 };
 
-export default withApollo({ ssr: true })(BookClubPage);
+export async function getStaticProps(context) {
+    const id = context.params.id;
+    return {
+        props: {
+            communityId: parseFloat(id),
+        },
+    };
+}
+
+export async function getStaticPaths(context) {
+    const postsWithIds = `
+     query {
+        postWithIds{
+            id
+        }
+     }
+    `;
+
+    const response = await request(
+        process.env.NEXT_PUBLIC_API_URI,
+        postsWithIds,
+    );
+    const paths = response.postWithIds.map((post) => ({
+        params: { id: `${post.id}` },
+    }));
+    return { paths, fallback: true };
+}
+
+export default withApollo({ ssr: false })(BookClubPage);

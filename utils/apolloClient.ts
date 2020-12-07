@@ -8,8 +8,9 @@ import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
 import { PaginatedPosts } from "~/generated/graphql";
 import _ from "lodash";
+import { isServer } from "./isServer";
 
-export default function createApolloClient(initialState, ctx) {
+export default function createApolloClient(ctx) {
     // The `ctx` (NextPageContext) will only be present on the server.
     // use it to extract auth headers (ctx.req) or similar.
 
@@ -30,8 +31,10 @@ export default function createApolloClient(initialState, ctx) {
     });
 
     const authLink = setContext((_, { headers }) => {
-        const token = localStorage.getItem("userToken");
-
+        const token =
+            typeof window === "undefined"
+                ? undefined
+                : localStorage.getItem("userToken");
         return {
             headers: {
                 ...headers,
