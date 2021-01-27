@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, Link } from "@chakra-ui/react";
+import { Flex, Image, Link } from "@chakra-ui/react";
 import React, { Fragment, useState } from "react";
 import {
     RegularUserFragment,
@@ -6,10 +6,8 @@ import {
     usePostsQuery,
 } from "~/generated/graphql";
 import Card from "./Card";
-import ExploreCard from "./ExploreCard";
 import HomepagePosts from "./HomepagePosts";
 import LoadingPosts from "./LoadingPosts";
-import PostCard from "./PostCard";
 
 interface PostsProps {
     me: RegularUserFragment;
@@ -32,14 +30,6 @@ const Posts: React.FC<PostsProps> = ({ me }) => {
         },
         fetchPolicy: "cache-and-network",
     });
-
-    // if (loading || myPostsLoading) {
-    //     return <p>Loading posts...</p>;
-    // }
-
-    // if (!data || !myCommunitiesPosts) {
-    //     return <p>Could not return posts</p>;
-    // }
 
     return (
         <Fragment>
