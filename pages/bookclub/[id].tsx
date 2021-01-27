@@ -9,6 +9,7 @@ import {
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { Fragment, useState } from "react";
+import { Helmet } from "react-helmet";
 import { request } from "graphql-request";
 import Card from "~/components/Card";
 import CommunityPosts from "~/components/CommunityPosts";
@@ -64,9 +65,9 @@ const BookClubPage: React.FC<BookClubPageProps> = ({
 
     return (
         <Fragment>
-            <Head>
+            <Helmet>
                 <title>Bookclub | {data.community.name}</title>
-            </Head>
+            </Helmet>
             <NavBar me={meData.me} />
             <Box mt={10}>
                 <Card width="100%">
