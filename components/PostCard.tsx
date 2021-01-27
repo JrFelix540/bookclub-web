@@ -157,9 +157,9 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                     isTruncated
                                     maxW={{
                                         base: "250px",
-                                        sm: "500px",
-                                        md: "700px",
-                                        lg: "650px",
+                                        md: "500px",
+                                        lg: "700px",
+                                        xl: "650px",
                                     }}
                                 >
                                     {post.content}

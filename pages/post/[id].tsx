@@ -2,6 +2,7 @@ import { Flex, Grid } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { Fragment } from "react";
+import { Helmet } from "react-helmet";
 import FullPostCard from "~/components/FullPostCard";
 import NavBar from "~/components/NavBar";
 import SidebarsPost from "~/components/SIdebarsPost";
@@ -11,6 +12,9 @@ import { isServer } from "~/utils/isServer";
 import { useGetIntId } from "~/utils/useGetIntId";
 import { withApollo } from "~/utils/withApollo";
 import { request } from "graphql-request";
+import LoadingNavbar from "~/components/LoadingNavbar";
+import LoadingPost from "~/components/LoadingPost";
+import SidebarCommunitiesLoading from "~/components/SidebarCommunitiesLoading";
 
 const PostPage: React.FC = () => {
     const router = useRouter();
@@ -27,24 +31,20 @@ const PostPage: React.FC = () => {
         skip: isServer(),
     });
 
-    if (meLoading) {
-        return <p>Loading user...</p>;
-    }
-
-    if (loading) {
-        return <p>Loading Post</p>;
-    }
-
     if (!loading && !data) {
         return <p>Couldn't find post</p>;
     }
 
     return (
         <Fragment>
-            <Head>
-                <title>{data.post.title}</title>
-            </Head>
-            <NavBar me={meData.me} />
+            <Helmet>
+                <title>{data?.post.title}</title>
+            </Helmet>
+            {meLoading ? (
+                <LoadingNavbar />
+            ) : (
+                <NavBar me={meData?.me} />
+            )}
             <Wrapper>
                 <Grid
                     templateColumns={{
@@ -53,11 +53,15 @@ const PostPage: React.FC = () => {
                     }}
                     columnGap="20px"
                 >
-                    <Flex mt={10}>
-                        <FullPostCard
-                            post={data.post}
-                            me={meData.me}
-                        />
+                    <Flex mt={10} direction="column">
+                        {loading ? (
+                            <LoadingPost />
+                        ) : (
+                            <FullPostCard
+                                post={data?.post}
+                                me={meData?.me}
+                            />
+                        )}
                     </Flex>
                     <Flex
                         mt={10}
@@ -66,10 +70,14 @@ const PostPage: React.FC = () => {
                             lg: "flex",
                         }}
                     >
-                        <SidebarsPost
-                            communityId={data.post.community.id}
-                            me={meData.me}
-                        />
+                        {loading ? (
+                            <SidebarCommunitiesLoading />
+                        ) : (
+                            <SidebarsPost
+                                communityId={data?.post.community.id}
+                                me={meData?.me}
+                            />
+                        )}
                     </Flex>
                 </Grid>
             </Wrapper>
