@@ -2,7 +2,7 @@ import {
     FormControl,
     FormErrorMessage,
     Select,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { useField } from "formik";
 import React, { Fragment, SelectHTMLAttributes } from "react";
 

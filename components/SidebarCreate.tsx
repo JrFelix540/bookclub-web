@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/core";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import React, { Fragment } from "react";
 import { RegularUserFragment } from "~/generated/graphql";
@@ -25,7 +25,7 @@ const SidebarCreate: React.FC<SidebarHomeProps> = ({ me }) => {
                             <Image
                                 src="/book.png"
                                 alt="BookClub Logo"
-                                size="40px"
+                                boxSize="40px"
                             />
                             <Text>Home</Text>
                         </Flex>

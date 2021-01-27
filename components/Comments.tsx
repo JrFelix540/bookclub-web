@@ -1,4 +1,4 @@
-import { Flex, Link, Text } from "@chakra-ui/core";
+import { Flex, Link, Text } from "@chakra-ui/react";
 import React, { Fragment } from "react";
 import { usePostCommentsQuery } from "~/generated/graphql";
 import CommentUpvote from "./CommentUpvote";

@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Icon, Link, Text } from "@chakra-ui/core";
+import {
+    Box,
+    Button,
+    Flex,
+    Icon,
+    Link,
+    Text,
+} from "@chakra-ui/react";
+import { CheckCircleIcon } from "@chakra-ui/icons";
 import React, { Fragment, useState } from "react";
 import {
     CommunityDocument,
@@ -62,9 +70,8 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                                     </Text>
                                 </Flex>
                                 {post.joinStatus ? (
-                                    <Icon
-                                        name="check-circle"
-                                        size="20px"
+                                    <CheckCircleIcon
+                                        boxSize="20px"
                                         color="blue.500"
                                     />
                                 ) : (

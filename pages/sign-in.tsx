@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Link } from "@chakra-ui/core";
+import { Avatar, Box, Button, Link } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/dist/client/router";
 import NextLink from "next/link";

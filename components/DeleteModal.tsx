@@ -1,4 +1,3 @@
-import { ApolloCache } from "@apollo/react-hooks";
 import {
     useDisclosure,
     ModalOverlay,
@@ -12,7 +11,7 @@ import {
     Link,
     Icon,
     Flex,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import React from "react";
 import {
     PostCommentsDocument,
@@ -71,30 +70,32 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
                                             id,
                                         },
                                         update: (store, { data }) => {
-                                            const postsData = store.readQuery<
-                                                PostsQuery
-                                            >({
-                                                query: PostsDocument,
-                                            });
+                                            const postsData = store.readQuery<PostsQuery>(
+                                                {
+                                                    query: PostsDocument,
+                                                },
+                                            );
 
-                                            store.writeQuery<
-                                                PostsQuery
-                                            >({
-                                                query: PostsDocument,
-                                                data: {
-                                                    posts: {
-                                                        posts: postsData.posts.posts.filter(
-                                                            (post) =>
-                                                                post.id !==
-                                                                id,
-                                                        ),
-                                                        hasMore:
-                                                            postsData
-                                                                .posts
-                                                                .hasMore,
+                                            store.writeQuery<PostsQuery>(
+                                                {
+                                                    query: PostsDocument,
+                                                    data: {
+                                                        posts: {
+                                                            posts: postsData.posts.posts.filter(
+                                                                (
+                                                                    post,
+                                                                ) =>
+                                                                    post.id !==
+                                                                    id,
+                                                            ),
+                                                            hasMore:
+                                                                postsData
+                                                                    .posts
+                                                                    .hasMore,
+                                                        },
                                                     },
                                                 },
-                                            });
+                                            );
                                         },
                                     });
                                 } else if (entity === "comment") {
@@ -103,35 +104,37 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
                                             commentId: id,
                                         },
                                         update: (store) => {
-                                            const postCommentsData = store.readQuery<
-                                                PostCommentsQuery
-                                            >({
-                                                query: PostCommentsDocument,
-                                                variables: {
-                                                    postId: postCommentId,
+                                            const postCommentsData = store.readQuery<PostCommentsQuery>(
+                                                {
+                                                    query: PostCommentsDocument,
+                                                    variables: {
+                                                        postId: postCommentId,
+                                                    },
                                                 },
-                                            });
+                                            );
 
                                             const newComments = postCommentsData.postComments.filter(
                                                 (comment) =>
                                                     id !== comment.id,
                                             );
 
-                                            store.writeQuery<
-                                                PostCommentsQuery
-                                            >({
-                                                query: PostCommentsDocument,
-                                                variables: {
-                                                    postId: postCommentId,
+                                            store.writeQuery<PostCommentsQuery>(
+                                                {
+                                                    query: PostCommentsDocument,
+                                                    variables: {
+                                                        postId: postCommentId,
+                                                    },
+                                                    data: {
+                                                        postComments: postCommentsData.postComments.filter(
+                                                            (
+                                                                comment,
+                                                            ) =>
+                                                                comment.id !==
+                                                                id,
+                                                        ),
+                                                    },
                                                 },
-                                                data: {
-                                                    postComments: postCommentsData.postComments.filter(
-                                                        (comment) =>
-                                                            comment.id !==
-                                                            id,
-                                                    ),
-                                                },
-                                            });
+                                            );
                                         },
                                     });
                                 }

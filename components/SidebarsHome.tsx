@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/core";
+import { Flex } from "@chakra-ui/react";
 import React, { Fragment } from "react";
 import { RegularUserFragment } from "~/generated/graphql";
 import SidebarCommunities from "./SidebarCommunities";

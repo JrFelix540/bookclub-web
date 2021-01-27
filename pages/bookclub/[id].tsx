@@ -5,7 +5,7 @@ import {
     Flex,
     Grid,
     Text,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { Fragment, useState } from "react";

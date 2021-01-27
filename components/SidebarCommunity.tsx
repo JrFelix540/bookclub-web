@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/core";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import React, { Fragment } from "react";
 import NextLink from "next/link";
 import Card from "./Card";
@@ -48,7 +48,7 @@ const SidebarCommunity: React.FC<SidebarCommunityProps> = ({
                             <Image
                                 src="/book.png"
                                 alt="BookClub Logo"
-                                size="40px"
+                                boxSize="40px"
                             />
                             <Text ml={4}>
                                 b/{data.community.name}

@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, Link } from "@chakra-ui/core";
+import { Box, Button, Flex, Image, Link } from "@chakra-ui/react";
 import React, { Fragment, useState } from "react";
 import {
     RegularUserFragment,

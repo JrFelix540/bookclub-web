@@ -1,13 +1,7 @@
 import { ApolloCache } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import {
-    IconButton,
-    Text,
-    Button,
-    Icon,
-    Link,
-    Box,
-} from "@chakra-ui/core";
+import { Text, Icon, Link, Box } from "@chakra-ui/react";
+import { TriangleUpIcon, TriangleDownIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
 import {
     RegularPostFragment,
@@ -102,9 +96,8 @@ const Upvote: React.FC<UpvoteProps> = ({ post }) => {
                         setLoadingState("not-loading");
                     }}
                 >
-                    <Icon
+                    <TriangleUpIcon
                         aria-label="Upvote"
-                        name="triangle-up"
                         color={
                             post.hasVoted === 1
                                 ? "blue.500"
@@ -139,8 +132,7 @@ const Upvote: React.FC<UpvoteProps> = ({ post }) => {
                         setLoadingState("not-loading");
                     }}
                 >
-                    <Icon
-                        name="triangle-down"
+                    <TriangleDownIcon
                         color={
                             post.hasVoted === -1
                                 ? "red.500"

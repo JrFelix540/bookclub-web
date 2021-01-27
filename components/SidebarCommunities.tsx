@@ -5,7 +5,7 @@ import {
     List,
     ListItem,
     Text,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import React from "react";
 import { useCommunityWithIdsQuery } from "~/generated/graphql";
 import Card from "./Card";

@@ -1,5 +1,6 @@
 import { ApolloCache } from "@apollo/react-hooks";
-import { Box, Flex, Icon, Link, Text } from "@chakra-ui/core";
+import { Box, Flex, Icon, Link, Text } from "@chakra-ui/react";
+import { TriangleUpIcon, TriangleDownIcon } from "@chakra-ui/icons";
 import React, { Fragment } from "react";
 import gql from "graphql-tag";
 import {
@@ -83,8 +84,7 @@ const CommentUpvote: React.FC<CommentUpvoteProps> = ({ comment }) => {
                             }
                         }}
                     >
-                        <Icon
-                            name="triangle-up"
+                        <TriangleUpIcon
                             color={
                                 comment.voteStatus === 1
                                     ? "blue.500"
@@ -120,8 +120,7 @@ const CommentUpvote: React.FC<CommentUpvoteProps> = ({ comment }) => {
                             }
                         }}
                     >
-                        <Icon
-                            name="triangle-down"
+                        <TriangleDownIcon
                             color={
                                 comment.voteStatus === -1
                                     ? "red.500"

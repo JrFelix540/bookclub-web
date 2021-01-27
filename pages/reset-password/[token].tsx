@@ -1,4 +1,4 @@
-import { Box, Avatar, Button } from "@chakra-ui/core";
+import { Box, Avatar, Button } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { useRouter } from "next/dist/client/router";
 import React, { Fragment, useState } from "react";
@@ -43,21 +43,6 @@ const ResetPassword: React.FC = () => {
                                     { setErrors },
                                 ) => {
                                     setLoading(true);
-                                    // const response = await resetPassword({
-                                    //     variables: {
-                                    //         password: values.password,
-                                    //         token: typeof router.query.token === `string` ?
-                                    //             router.query.token as string :
-                                    //             ''
-                                    //     }
-                                    // })
-
-                                    // if(response.data.resetPassword.errors){
-                                    //     setErrors(formatErrorMessage(response.data.resetPassword.errors))
-                                    // }
-                                    // if (response.data.resetPassword.user){
-                                    //     router.push('/')
-                                    // }
                                 }}
                             >
                                 {

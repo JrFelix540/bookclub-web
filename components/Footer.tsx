@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/core";
+import { Flex, Text } from "@chakra-ui/react";
 import React, { Fragment } from "react";
 import Card from "./Card";
 

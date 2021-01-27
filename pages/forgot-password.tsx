@@ -6,7 +6,7 @@ import {
     AlertIcon,
     Text,
     Link,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import React, { Fragment, useState } from "react";
 import Card from "~/components/Card";
@@ -16,7 +16,6 @@ import Wrapper from "~/components/Wrapper";
 import { withApollo } from "~/utils/withApollo";
 
 const ForgotPassword: React.FC = () => {
-    // const [forgotPassword, {}] = useForgorPasswordMutation();
     const [showAlert, setShowAlert] = useState<boolean>(false);
     return (
         <Fragment>

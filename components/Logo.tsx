@@ -1,4 +1,4 @@
-import { Flex, Image, Text } from "@chakra-ui/core";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import React, { Fragment } from "react";
 
 const Logo: React.FC = () => {
@@ -8,7 +8,7 @@ const Logo: React.FC = () => {
                 <Image
                     src="/book.png"
                     alt="BookClub Logo"
-                    size="40px"
+                    boxSize="40px"
                 />
                 <Text>BookClub</Text>
             </Flex>

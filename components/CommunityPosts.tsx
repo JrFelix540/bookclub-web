@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/core";
+import { Flex } from "@chakra-ui/react";
 import React, { Fragment } from "react";
 import { useCommunityPostsQuery } from "~/generated/graphql";
 import EmptyCommunityPosts from "./EmptyCommunityPosts";

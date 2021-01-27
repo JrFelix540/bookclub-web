@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/core";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { useRouter } from "next/router";
 import React, { Fragment } from "react";
@@ -39,32 +39,32 @@ const PostComment: React.FC<PostCommentProps> = ({ postId, me }) => {
                                         content: values.content,
                                     },
                                     update: (store, { data }) => {
-                                        const commentsData = store.readQuery<
-                                            PostCommentsQuery
-                                        >({
-                                            query: PostCommentsDocument,
-                                            variables: {
-                                                postId: postId,
+                                        const commentsData = store.readQuery<PostCommentsQuery>(
+                                            {
+                                                query: PostCommentsDocument,
+                                                variables: {
+                                                    postId: postId,
+                                                },
                                             },
-                                        });
-                                        store.writeQuery<
-                                            PostCommentsQuery
-                                        >({
-                                            query: PostCommentsDocument,
-                                            variables: {
-                                                postId: postId,
-                                            },
+                                        );
+                                        store.writeQuery<PostCommentsQuery>(
+                                            {
+                                                query: PostCommentsDocument,
+                                                variables: {
+                                                    postId: postId,
+                                                },
 
-                                            data: {
-                                                postComments: [
-                                                    ...commentsData!
-                                                        .postComments,
-                                                    data!
-                                                        .createComment
-                                                        .comment,
-                                                ],
+                                                data: {
+                                                    postComments: [
+                                                        ...commentsData!
+                                                            .postComments,
+                                                        data!
+                                                            .createComment
+                                                            .comment,
+                                                    ],
+                                                },
                                             },
-                                        });
+                                        );
                                     },
                                 });
                                 if (
@@ -123,8 +123,11 @@ const PostComment: React.FC<PostCommentProps> = ({ postId, me }) => {
                     padding={4}
                     borderRadius="10px"
                 >
-                    <Flex justifyContent="space-between">
-                        <Box>
+                    <Flex
+                        justifyContent="space-between"
+                        direction={{ base: "column", md: "row" }}
+                    >
+                        <Box mb={{ base: "10px", md: "0px" }}>
                             <Text>
                                 Login/ Sign up to comment on this
                                 post.

@@ -1,5 +1,5 @@
-import { Box, Avatar, Button, Text, Link } from "@chakra-ui/core";
-import { Formik, Form } from "formik";
+import { Box, Button, Link, Text } from "@chakra-ui/react";
+import { Form, Formik } from "formik";
 import { useRouter } from "next/dist/client/router";
 import React, { Fragment, useState } from "react";
 import Card from "~/components/Card";
@@ -14,7 +14,6 @@ import {
 } from "~/generated/graphql";
 import { formatErrorMessage } from "~/utils/formatError";
 import { withApollo } from "~/utils/withApollo";
-import Footer from "~/components/Footer";
 
 const Register: React.FC = () => {
     const [register, {}] = useRegisterUserMutation();

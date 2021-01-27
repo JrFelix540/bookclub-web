@@ -1,4 +1,4 @@
-import { Grid, Flex, Box, Button, Text } from "@chakra-ui/core";
+import { Grid, Flex, Box, Button, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import Head from "next/head";
 import { useRouter } from "next/router";

@@ -11,7 +11,8 @@ import {
     List,
     ListItem,
     Icon,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
+import { TriangleDownIcon } from "@chakra-ui/icons";
 import React, { Fragment, useState } from "react";
 import Card from "./Card";
 import Wrapper from "./Wrapper";
@@ -69,9 +70,9 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
             <>
                 <Flex>
                     <Flex mr={4}>
-                        <Avatar size="sm">
+                        <Avatar name={me.username}>
                             <AvatarBadge
-                                size="1.25em"
+                                boxSize="1.25em"
                                 bg="green.500"
                             />
                         </Avatar>
@@ -85,10 +86,7 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                                 setShowMenu(!showMenu);
                             }}
                         >
-                            <Icon
-                                name="triangle-down"
-                                fontSize="12px"
-                            />
+                            <TriangleDownIcon fontSize="12px" />
                         </Link>
                     </Flex>
                 </Flex>
@@ -146,19 +144,6 @@ const NavBar: React.FC<NavBarProps> = ({ me }) => {
                                                                 },
                                                             },
                                                         );
-                                                        // cache.writeQuery<MyCommunitiesPostsQuery>(
-                                                        //     {
-                                                        //         query: MyCommunitiesPostsDocument,
-                                                        //         data: {
-                                                        //             __typename:
-                                                        //                 "Query",
-                                                        //             myCommunitiesPosts: {
-                                                        //                 posts: [],
-                                                        //                 hasMore: false,
-                                                        //             },
-                                                        //         },
-                                                        //     },
-                                                        // );
                                                     },
                                                 });
                                             }}

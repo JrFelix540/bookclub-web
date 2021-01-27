@@ -1,4 +1,4 @@
-import { Flex, Image, Text } from "@chakra-ui/core";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import React, { Fragment } from "react";
 import { RegularUserFragment } from "~/generated/graphql";
 import Card from "./Card";
