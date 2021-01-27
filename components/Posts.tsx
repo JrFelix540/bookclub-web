@@ -37,9 +37,9 @@ const Posts: React.FC<PostsProps> = ({ me }) => {
     //     return <p>Loading posts...</p>;
     // }
 
-    if (!data || !myCommunitiesPosts) {
-        return <p>Could not return posts</p>;
-    }
+    // if (!data || !myCommunitiesPosts) {
+    //     return <p>Could not return posts</p>;
+    // }
 
     return (
         <Fragment>
