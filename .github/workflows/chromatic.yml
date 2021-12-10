@@ -2,7 +2,7 @@ name: "Chromatic"
 
 on:
   push:
-    path: "components/**"
+    paths: "components/**"
 
 jobs:
   chromatic-deployment:
