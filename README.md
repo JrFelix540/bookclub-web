@@ -13,8 +13,6 @@ See project demo [here](https://bookclub-web.vercel.app/)
 
 ## Why behind the main tools
 
-- **GraphQL**: Efficient network requests. Furthermore, fetching data from one url was more appealing to me. Plus, I was curious about building GraphQL APIs from scratch, so I built one for this project.
-
 - **NextJs**: The option of choosing between static generation and server-side generation was the main reason for choosing this. More information can be found [here](https://vercel.com/blog/nextjs-server-side-rendering-vs-static-generation)
 
 - **Apollo Client**: I chose apollo client because it was easier for me to understand.
