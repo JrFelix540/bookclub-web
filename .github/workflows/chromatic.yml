@@ -2,8 +2,7 @@ name: "Chromatic"
 
 on:
   push:
-    path:
-      - "**.tsx"
+    path: "components/**"
 
 jobs:
   chromatic-deployment:
