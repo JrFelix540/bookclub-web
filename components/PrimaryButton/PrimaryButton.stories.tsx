@@ -31,12 +31,3 @@ SecondaryButton.args = {
   borderRadius: "sm",
   variant: "solid",
 };
-
-export const TertiaryButton = Template.bind({});
-TertiaryButton.args = {
-  color: "#ffffff",
-  backgroundColor: "red",
-  height: "40px",
-  width: "100px",
-  variant: "solid",
-};
